@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+source "$(pwd)/pretty-print"
+
+packages=(
+    pylint
+)
+
+title "Python"
+
+if ! brew list python &>/dev/null; then
+	step "Installing Python…"
+	brew install python > /dev/null
+fi
+
+for package in "${packages[@]}"; do
+	echo_install "$package"
+	pip install --upgrade --user $package --quiet
+	print_in_green "${bold}✓ installed!${normal}\n"
+done

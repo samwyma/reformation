@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+source "$(pwd)/pretty-print"
+
+brews=(
+    awscli
+    git
+    gopass
+    gnupg
+    jq
+    shellcheck
+    wget
+    yq
+)
+
+title "Brews"
+
+brew update &> /dev/null
+for brew in "${brews[@]}"; do
+    if ! brew list $brew &> /dev/null; then
+        echo_install "Installing $brew"
+		brew install $brew > /dev/null
+		print_in_green "${bold}✓ installed!${normal}\n"
+	else
+        if ! brew outdated "$brew" &>/dev/null; then
+            echo_install "Upgrading $brew"
+            brew upgrade "$brew" > /dev/null
+		    print_in_green "${bold}✓ upgraded!${normal}\n"
+        else
+            print_success_muted "$brew"
+        fi
+    fi
+done
