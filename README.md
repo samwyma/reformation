@@ -9,7 +9,7 @@ It can be run multiple times on the same machine safely. It installs, upgrades, 
 ## Install
 
 ```sh
-git clone git@github.com/minamarkham/formation.git && cd formation
+git clone git@github.com:landtechnologies/reformation.git && cd reformation
 ```
 
 Reform!
