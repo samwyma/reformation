@@ -24,8 +24,8 @@ Reform!
 
 ## Mods
 
-`reform` loops over and executes all 'mods' defined in the `./mods` folder. 'Mods' used for modifying your system. Think... aliases, kernel tweaks, users etc...
+`reform` loops over and executes all 'mods' defined in the `./mods` folder. 'Mods' are used for modifying your system. Think... aliases, kernel tweaks, users etc...
 
 ## Known Issues
 
-Cask does not recognise applications installed outside of Homebrew Cask – in the case that the script fails, you can either remove the application from the install list or uninstall the application causing the failure and try again.
+`brew cask` does not recognise applications installed outside of it – in the case that the script fails, you can either remove the application from the install list or uninstall the application causing the failure and try again.
