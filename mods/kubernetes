@@ -2,13 +2,18 @@
 source "$(pwd)/pretty-print"
 
 if ! [ -x "$(command -v brew)" ]; then
-    print_error "Docker is required, it should be included in the 'specs'
+    print_error "Docker is required, it should be included in the 'specs'"
     return 1
 fi
 
 docker run -e GOOS=darwin -e GOARCH=amd64 -v ~/usr/local/bin/:/go/bin/darwin_amd64 golang \
-  go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
+  go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb > /dev/null
+print_success_muted "jsonnet-bundler"
+
 docker run -e GOOS=darwin -e GOARCH=amd64 -v ~/usr/local/bin/:/go/bin/darwin_amd64 golang \
-  go get github.com/brancz/gojsontoyaml
+  go get github.com/brancz/gojsontoyaml > /dev/null
+print_success_muted "gojsontoyaml"
+
 docker run -e GOOS=darwin -e GOARCH=amd64 -v ~/usr/local/bin/:/go/bin/darwin_amd64 golang \
-  go get github.com/VirtusLab/render
+  go get github.com/VirtusLab/render > /dev/null
+print_success_muted "render"
