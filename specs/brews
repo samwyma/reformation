@@ -2,11 +2,13 @@
 source "$(pwd)/pretty-print"
 
 brews=(
+    aws-iam-authenticator
     awscli
     git
     gopass
     gnupg
     jq
+    jsonnet
     shellcheck
     wget
     yq
