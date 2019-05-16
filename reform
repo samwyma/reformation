@@ -149,7 +149,7 @@ install_specs
 ###############################################################################
 # OPTIONAL: Modifications
 ###############################################################################
-chapter "Adding modifications…"
+chapter "Adding Mods…"
 
 install_mods
 
