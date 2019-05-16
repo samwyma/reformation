@@ -13,8 +13,9 @@ title "Bash"
 
 if ! brew list bash &> /dev/null; then
     echo_install "Installing bash"
+    brew unlink bash &> /dev/null || true
     brew install bash > /dev/null
-    brew link --overwrite bash
+    brew link --overwrite bash > /dev/null
     print_in_green "${bold}✓ installed!${normal}\n"
 else
     if ! brew outdated bash &>/dev/null; then
