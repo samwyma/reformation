@@ -64,8 +64,7 @@ install_homebrew() {
 }
 
 install_xcode() {
-   if type xcode-select >&- && xpath=$( xcode-select --print-path ) &&
-      test -d "${xpath}" && test -x "${xpath}" ; then
+   if [ -x "$(command -v xcode-select)" ]; then
       print_success_muted "Xcode already installed. Skipping."
    else
       step "Installing Xcode…"
@@ -105,7 +104,7 @@ install_mods() {
 ###############################################################################
 
 check_bash_version
-source pretty-print
+source $cwd/pretty-print
 
 printf "
             ___                   _   _         
