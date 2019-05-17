@@ -14,14 +14,16 @@ casks=(
 )
 
 title "Casks"
+installed=$(brew cask list)
+outdated=$(brew cask outdated)
 
 for cask in "${casks[@]}"; do
-    if ! brew cask list $cask &>/dev/null; then
+    if ! echo $installed | grep -q $cask; then
         echo_install "Installing $cask"
-        brew cask install $cask --appdir=/Applications >/dev/null
+        brew cask install $cask --appdir=/Applications &>/dev/null
         print_in_green "${bold}✓ installed!${normal}\n"
     else
-        if ! brew cask outdated "$cask" &>/dev/null; then
+        if echo $outdated | grep -q "$cask"; then
             echo_install "Upgrading $cask"
             brew cask upgrade "$cask" > /dev/null
 		    print_in_green "${bold}✓ upgraded!${normal}\n"

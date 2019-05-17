@@ -16,14 +16,17 @@ brews=(
 
 title "Brews"
 
-brew update &> /dev/null
+brew update &>/dev/null
+installed=$(brew list)
+outdated=$(brew outdated)
+
 for brew in "${brews[@]}"; do
-    if ! brew list $brew &> /dev/null; then
+    if ! echo "$installed" | grep -q $brew; then
         echo_install "Installing $brew"
 		brew install $brew > /dev/null
 		print_in_green "${bold}✓ installed!${normal}\n"
 	else
-        if ! brew outdated "$brew" &>/dev/null; then
+        if echo "$outdated" | grep -q "$brew"; then
             echo_install "Upgrading $brew"
             brew upgrade "$brew" > /dev/null
 		    print_in_green "${bold}✓ upgraded!${normal}\n"
