@@ -6,6 +6,8 @@ if ! [ -x "$(command -v brew)" ]; then
     return 1
 fi
 
+docker pull golang > /dev/null 2>&1
+
 docker run -e GOOS=darwin -e GOARCH=amd64 -v ~/usr/local/bin/:/go/bin/darwin_amd64 golang \
   go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb > /dev/null
 print_success_muted "jsonnet-bundler"

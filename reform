@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
 ###############################################################################
+# VARIABLES
+###############################################################################
+
+cwd="$(cd "$(dirname "$0")" && pwd)" # Get full directory name of this script
+
+###############################################################################
 # ERROR: Let the user know if the script fails
 ###############################################################################
 
@@ -8,11 +14,8 @@ trap 'ret=$?; test $ret -ne 0 && printf "\n   \e[31m\033[0m  Formation failed
 set -e
 
 ###############################################################################
-# FUNCTIONS: Helpers
+# FUNCTIONS
 ###############################################################################
-
-# Get full directory name of this script
-cwd="$(cd "$(dirname "$0")" && pwd)"
 
 check_bash_version() {
    if ((BASH_VERSINFO[0] < 3))
@@ -23,9 +26,9 @@ check_bash_version() {
 }
 
 check_internet_connection() {
-    if [ ping -q -w1 -c1 google.com &>/dev/null ]; then
+    if ! ping -c1 google.com &> /dev/null; then
         print_error "Please check your internet connection";
-        exit 0
+        exit 1
     else
         print_success "Internet connection";
     fi
@@ -103,6 +106,7 @@ install_mods() {
 # Reform!                    http://patorjk.com/software/taag/ ( font: Script )
 ###############################################################################
 
+set_verbosity
 check_bash_version
 source $cwd/pretty-print
 
@@ -123,34 +127,18 @@ printf "
 ${dim}$BASH ${normal}${dim}v$BASH_VERSION${reset}
 "
 
-###############################################################################
-# CHECKS: Prerequisites
-###############################################################################
-chapter "Checks…"
-
+chapter "Prerequisites…"
 check_internet_connection
 check_ssh_key
 
-###############################################################################
-# INSTALL: Dependencies
-###############################################################################
 chapter "Dependencies…"
-
 install_xcode
 install_homebrew
 
-###############################################################################
-# INSTALL: Specs
-###############################################################################
 chapter "Installing Specs"
-
 install_specs
 
-###############################################################################
-# OPTIONAL: Modifications
-###############################################################################
 chapter "Adding Mods…"
-
 install_mods
 
 printf "\n${bold}You have been reformed! Have a nice day.${normal}\n\n"
