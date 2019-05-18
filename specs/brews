@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
 source "$(pwd)/pretty-print"
 
+# By default `bash` on MacOS is v3.x which is very old! The below upgrades you to the latest
+# You'll end up with:
+#   - /bin/bash <= v3.x
+#   - /usr/local/bin/bash <= v5+
+# /bin is a protected directly, it can't be changed (even with `sudo`), therefore on all scripts, at the top use:
+# !/usr/bin/env bash
+# https://itnext.io/upgrading-bash-on-macos-7138bd1066ba
+
 brews=(
     aws-iam-authenticator
     awscli
+    bash
     git
     gopass
     gnupg
@@ -23,7 +32,8 @@ outdated=$(brew outdated)
 for brew in "${brews[@]}"; do
     if ! echo "$installed" | grep -q $brew; then
         echo_install "Installing $brew"
-		brew install $brew > /dev/null
+		brew install $brew &>/dev/null
+        brew link --overwrite $brew >/dev/null
 		print_in_green "${bold}✓ installed!${normal}\n"
 	else
         if echo "$outdated" | grep -q "$brew"; then
