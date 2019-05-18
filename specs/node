@@ -11,26 +11,24 @@ title "Node"
 if ! brew list nvm &>/dev/null; then
 	step "Installing NVM…"
 	brew install nvm > /dev/null
+	nvm install node &> /dev/null
 	mkdir -p $HOME/.nvm
-	print_success "NVM installed!"
+	print_success "nvm installed!"
 else
-	print_success_muted "NVM already installed. Skipping."
+	print_success_muted "nvm already installed. Skipping."
 fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && source "/usr/local/opt/nvm/nvm.sh"
-echo_install "Installing Node…"
-nvm install node &> /dev/null
-print_in_green "${bold}✓ installed!${normal}\n"
 nvm use node > /dev/null
 
 for module in "${modules[@]}"; do
 	if ! npm list -g $module &> /dev/null; then
 		echo_install "Installing $module"
-		npm install $module -g --silent
+		npm install $module -g --silent >/dev/null
 		print_in_green "${bold}✓ installed!${normal}\n"
 	else
 		print_success_muted "$module"
-		npm update $module -g --silent
+		npm update $module -g --silent >/dev/null
 	fi
 done
