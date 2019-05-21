@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$(pwd)/pretty-print"
+source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 # By default `bash` on MacOS is v3.x which is very old! The below upgrades you to the latest
 # You'll end up with:
@@ -10,14 +10,16 @@ source "$(pwd)/pretty-print"
 # https://itnext.io/upgrading-bash-on-macos-7138bd1066ba
 
 brews=(
+    # kubernetes
     aws-iam-authenticator
+    jsonnet
+    # general
     awscli
     bash
     git
     gopass
     gnupg
     jq
-    jsonnet
     shellcheck
     wget
     yq
