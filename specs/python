@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
+source "$CWD/pretty-print"
 
 packages=(
 	credstash
@@ -10,7 +10,7 @@ packages=(
 
 title "Python"
 
-if ! brew list python &>/dev/null; then
+if $FORCE || ! brew list python &>/dev/null; then
 	step "Installing Python…"
 	brew install python > /dev/null
 fi

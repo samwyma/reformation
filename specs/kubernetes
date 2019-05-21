@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
+source "$CWD/pretty-print"
 
 title "Kubernetes"
 
@@ -16,7 +16,7 @@ if [[ ! ":$PATH:" == *":$HOME/.bin:"* ]]; then
   print_error 'Please add "$HOME/.bin" to your $PATH'
 fi
 
-if [ ! -f "$HOME/.bin/kubectl" ] || [ "$(kubectl version --client --output=json | jq -r .clientVersion.gitVersion)" != $kubectl_version ]; then
+if $FORCE || [ ! -f "$HOME/.bin/kubectl" ] || [ "$(kubectl version --client --output=json | jq -r .clientVersion.gitVersion)" != $kubectl_version ]; then
   echo_install "Installing kubectl"
   curl -L -s https://storage.googleapis.com/kubernetes-release/release/$kubectl_version/bin/darwin/amd64/kubectl > "$HOME/.bin/kubectl"
   print_in_green "${bold}✓ installed!${normal}\n"
@@ -24,7 +24,7 @@ else
   print_success_muted "kubectl"
 fi
 
-if [ ! -f "$HOME/.bin/helm" ] || ! helm version --client --short | grep -q "$helm_version+"; then
+if $FORCE || [ ! -f "$HOME/.bin/helm" ] || ! helm version --client --short | grep -q "$helm_version+"; then
   echo_install "Installing helm"
   curl -L -s https://kubernetes-helm.storage.googleapis.com/helm-$helm_version-darwin-amd64.tar.gz | tar xf - --strip=1 -C "$HOME/.bin" darwin-amd64/helm
   print_in_green "${bold}✓ installed!${normal}\n"
@@ -34,7 +34,7 @@ fi
   
 docker pull golang > /dev/null 2>&1
 
-if [ ! -f "$HOME/.bin/jb" ]; then
+if $FORCE || [ ! -f "$HOME/.bin/jb" ]; then
   echo_install "Installing jsonnet-bundler"
   docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
     "go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb && cp /go/bin/darwin_amd64/jb /data"
@@ -43,7 +43,7 @@ else
   print_success_muted "jsonnet-bundler"
 fi
 
-if [ ! -f "$HOME/.bin/gojsontoyaml" ]; then
+if $FORCE || [ ! -f "$HOME/.bin/gojsontoyaml" ]; then
   echo_install "Installing gojsontoyaml"
   docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
     "go get github.com/brancz/gojsontoyaml && cp /go/bin/darwin_amd64/gojsontoyaml /data"
@@ -52,7 +52,7 @@ else
   print_success_muted "gojsontoyaml"
 fi
 
-if [ ! -f "$HOME/.bin/render" ]; then
+if $FORCE || [ ! -f "$HOME/.bin/render" ]; then
   echo_install "Installing render"
   docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
     "go get github.com/VirtusLab/render && cp /go/bin/darwin_amd64/render /data"

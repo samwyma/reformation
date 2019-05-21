@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
+source "$CWD/pretty-print"
 
 modules=(
     eslint

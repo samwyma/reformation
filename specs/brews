@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
+source "$CWD/pretty-print"
 
 # By default `bash` on MacOS is v3.x which is very old! The below upgrades you to the latest
 # You'll end up with:
@@ -38,7 +38,11 @@ for brew in "${brews[@]}"; do
         brew link --overwrite $brew >/dev/null
 		print_in_green "${bold}✓ installed!${normal}\n"
 	else
-        if echo "$outdated" | grep -q "$brew"; then
+        if $FORCE; then
+            echo_install "Reinstalling $brew"
+            brew reinstall "$brew" > /dev/null
+		    print_in_green "${bold}✓ installed!${normal}\n"
+        elif echo "$outdated" | grep -q "$brew"; then
             echo_install "Upgrading $brew"
             brew upgrade "$brew" > /dev/null
 		    print_in_green "${bold}✓ upgraded!${normal}\n"

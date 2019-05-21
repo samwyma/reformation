@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
+source "$CWD/pretty-print"
 
 casks=(
     docker
@@ -23,7 +23,11 @@ for cask in "${casks[@]}"; do
         brew cask install $cask --appdir=/Applications &>/dev/null
         print_in_green "${bold}✓ installed!${normal}\n"
     else
-        if echo $outdated | grep -q "$cask"; then
+        if $FORCE; then
+            echo_install "Reinstalling $cask"
+            brew cask reinstall "$cask" > /dev/null
+		    print_in_green "${bold}✓ installed!${normal}\n"
+        elif echo $outdated | grep -q "$cask"; then
             echo_install "Upgrading $cask"
             brew cask upgrade "$cask" > /dev/null
 		    print_in_green "${bold}✓ upgraded!${normal}\n"

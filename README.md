@@ -16,6 +16,8 @@ Reform!
 
 ```sh
 ./reform
+./reform --force    # Force a re-install of any specs and mods
+./reform --help     # Show the help text
 ```
 
 ## Specs

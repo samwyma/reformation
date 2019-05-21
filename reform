@@ -4,7 +4,23 @@
 # VARIABLES
 ###############################################################################
 
-cwd="$(cd "$(dirname "$0")" && pwd)" # Get full directory name of this script
+export CWD="$(cd "$(dirname "$0")" && pwd)" # Get full directory name of this script
+export FORCE=false
+
+for var in "$@"
+do
+  case "$var" in
+    --force|-f)
+      FORCE=true
+      ;;
+    --help|-h)
+      echo "Usage:
+      -f, --force    : Force a re-install of all specs and mods"
+      exit 0
+      ;;
+  esac
+  shift
+done
 
 ###############################################################################
 # ERROR: Let the user know if the script fails
@@ -81,23 +97,23 @@ install_xcode() {
 }
 
 install_specs() {
-   if [ ! -d "$cwd/specs" ] && [ -z "$(ls -A $cwd/specs)" ]; then
+   if [ ! -d "$CWD/specs" ] && [ -z "$(ls -A $CWD/specs)" ]; then
       print_warning "No specs found. Skipping."
       return
    fi
 
-   for spec in $cwd/specs/*; do
+   for spec in $CWD/specs/*; do
       "$spec" 
    done
 }
 
 install_mods() {
-   if [ ! -d "$cwd/mods" ] || [ -z "$(ls -A $cwd/mods)" ]; then
+   if [ ! -d "$CWD/mods" ] || [ -z "$(ls -A $CWD/mods)" ]; then
       print_warning "No mods found. Skipping."
       return
    fi
 
-   for mod in $cwd/mods/*; do
+   for mod in $CWD/mods/*; do
       "$mod" 
    done
 }
@@ -107,7 +123,7 @@ install_mods() {
 ###############################################################################
 
 check_bash_version
-source $cwd/pretty-print
+source $CWD/pretty-print
 
 printf "
             ___                   _   _         
