@@ -5,6 +5,7 @@ title "Kubernetes"
 
 kubectl_version="v1.11.7"
 helm_version="v2.13.1"
+kops_version="1.11.1"
 
 if ! [ -x "$(command -v brew)" ]; then
     print_error "Docker is required, it should be included in the 'specs'"
@@ -31,7 +32,15 @@ if $FORCE || [ ! -f "$HOME/.bin/helm" ] || ! helm version --client --short | gre
 else
   print_success_muted "helm"
 fi
-  
+
+if $FORCE || [ ! -f "$HOME/.bin/kops" ] || ! kops version | grep -q " $kops_version "; then
+  echo_install "Installing kops"
+  curl -L -s https://github.com/kubernetes/kops/releases/download/${kops_version}/kops-darwin-amd64 -o "$HOME/.bin/kops" && chmod +x "$HOME/.bin/kops"
+  print_in_green "${bold}✓ installed!${normal}\n"
+else
+  print_success_muted "kops"
+fi
+
 docker pull golang > /dev/null 2>&1
 
 if $FORCE || [ ! -f "$HOME/.bin/jb" ]; then
