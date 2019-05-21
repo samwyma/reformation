@@ -13,6 +13,8 @@ if [[ ! ":$PATH:" == *":$HOME/.bin:"* ]]; then
 fi
 
 kubectl_version="v1.11.7"
+helm_version="v2.13.1"
+
 if [ ! -f "$HOME/.bin/kubectl" ] || [ "$(kubectl version --client --output=json | jq -r .clientVersion.gitVersion)" != $kubectl_version ]; then
   echo_install "Installing kubectl"
   curl -L -s https://storage.googleapis.com/kubernetes-release/release/$kubectl_version/bin/darwin/amd64/kubectl > $HOME/.bin/kubectl
@@ -21,6 +23,14 @@ else
   print_success_muted "kubectl"
 fi
 
+if [ ! -f "$HOME/.bin/helm" ] || helm version --client --short | grep -q "$helm_version+"; then
+  echo_install "Installing helm"
+  curl -L https://kubernetes-helm.storage.googleapis.com/helm-$helm_version-darwin-amd64.tar.gz | tar xf - --strip=1 -C $HOME/.bin darwin-amd64/helm
+  print_in_green "${bold}✓ installed!${normal}\n"
+else
+  print_success_muted "helm"
+fi
+  
 docker pull golang > /dev/null 2>&1
 
 if [ ! -f "$HOME/.bin/jb" ]; then
