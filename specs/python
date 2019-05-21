@@ -3,6 +3,7 @@ source "$(pwd)/pretty-print"
 
 packages=(
 	credstash
+	pip
 	pipenv
     pylint
 )

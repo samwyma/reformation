@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+source "$(pwd)/pretty-print"
+
+if ! [ -x "$(command -v brew)" ]; then
+    print_error "Docker is required, it should be included in the 'specs'"
+    return 1
+fi
+
+mkdir -p "$HOME/.bin"
+
+if [[ ! ":$PATH:" == *":$HOME/.bin:"* ]]; then
+  print_error 'Please add "$HOME/.bin" to your $PATH'
+fi
+
+kubectl_version="v1.11.7"
+if [ ! -f "$HOME/.bin/kubectl" ] || [ "$(kubectl version --client --output=json | jq -r .clientVersion.gitVersion)" != $kubectl_version ]; then
+  echo_install "Installing kubectl"
+  curl -L -s https://storage.googleapis.com/kubernetes-release/release/$kubectl_version/bin/darwin/amd64/kubectl > $HOME/.bin/kubectl
+  print_in_green "${bold}✓ installed!${normal}\n"
+else
+  print_success_muted "kubectl"
+fi
+
+docker pull golang > /dev/null 2>&1
+
+if [ ! -f "$HOME/.bin/jb" ]; then
+  echo_install "Installing jsonnet-bundler"
+  docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
+    "go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb && cp /go/bin/darwin_amd64/jb /data"
+  print_in_green "${bold}✓ installed!${normal}\n"
+else
+  print_success_muted "jsonnet-bundler"
+fi
+
+if [ ! -f "$HOME/.bin/gojsontoyaml" ]; then
+  echo_install "Installing gojsontoyaml"
+  docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
+    "go get github.com/brancz/gojsontoyaml && cp /go/bin/darwin_amd64/gojsontoyaml /data"
+  print_in_green "${bold}✓ installed!${normal}\n"
+else
+  print_success_muted "gojsontoyaml"
+fi
+
+if [ ! -f "$HOME/.bin/render" ]; then
+  echo_install "Installing render"
+  docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
+    "go get github.com/VirtusLab/render && cp /go/bin/darwin_amd64/render /data"
+  print_in_green "${bold}✓ installed!${normal}\n"
+else
+  print_success_muted "render"
+fi
+
