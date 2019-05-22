@@ -19,7 +19,7 @@ fi
 
 if $FORCE || [ ! -f "$HOME/.bin/kubectl" ] || [ "$(kubectl version --client --output=json | jq -r .clientVersion.gitVersion)" != $kubectl_version ]; then
   echo_install "Installing kubectl"
-  curl -L -s https://storage.googleapis.com/kubernetes-release/release/$kubectl_version/bin/darwin/amd64/kubectl > "$HOME/.bin/kubectl"
+  curl -L -s https://storage.googleapis.com/kubernetes-release/release/$kubectl_version/bin/darwin/amd64/kubectl > "$HOME/.bin/kubectl" && chmod +x "$HOME/.bin/kubectl"
   print_in_green "${bold}✓ installed!${normal}\n"
 else
   print_success_muted "kubectl"
