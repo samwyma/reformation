@@ -5,7 +5,6 @@
 ###############################################################################
 
 cwd="$(cd "$(dirname "$0")" && pwd)" # Get full directory name of this script
-export LOG=$cwd/reform.log
 export FORCE=false
 
 for var in "$@"
@@ -71,6 +70,15 @@ check_ssh_key() {
       fi
    else
       print_success "SSH key";
+   fi
+}
+
+check_path_entry() {
+   if ! [ -x "$(command -v reform1)" ]; then
+      print_error "\$PATH entry missing"
+      print_error "Add to your shell's rc file: PATH=\"$cwd/:\$PATH\""
+   else
+      print_success "$PATH entry"
    fi
 }
 
@@ -148,6 +156,7 @@ ${dim}$BASH ${normal}${dim}v$BASH_VERSION${reset}
 chapter "Prerequisites…"
 check_internet_connection
 check_ssh_key
+check_path_entry
 
 chapter "Dependencies…"
 install_xcode

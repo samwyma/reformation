@@ -14,7 +14,8 @@ fi
 
 mkdir -p "$HOME/.bin"
 if [[ ! ":$PATH:" == *":$HOME/.bin:"* ]]; then
-  print_error 'Please add "$HOME/.bin" to your $PATH'
+  print_error "\$PATH entry missing"
+  print_error "Add to your shell's rc file: PATH=\"\$HOME/.bin:\$PATH\""
 fi
 
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/kubectl" ] || [ "$(kubectl version --client --output=json | jq -r .clientVersion.gitVersion)" != $kubectl_version ]; then
