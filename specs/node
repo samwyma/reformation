@@ -2,28 +2,31 @@
 source "$CWD/pretty-print"
 
 modules=(
-    eslint
+	eslint
 	prettier
 )
 
 title "Node"
 
-if ! brew list nvm &>/dev/null; then
+export NVM_DIR="$HOME/.nvm"
+
+if ! [ -x "$(command -v nvm)" ]; then
 	step "Installing NVM…"
-	brew install nvm > /dev/null
-	nvm install node &> /dev/null
-	mkdir -p $HOME/.nvm
+	curl -fsS https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+	nvm install node &>/dev/null
 	print_success "nvm installed!"
 else
 	print_success_muted "nvm already installed. Skipping."
 fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && source "/usr/local/opt/nvm/nvm.sh"
-nvm use node > /dev/null
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 for module in "${modules[@]}"; do
-	if ! npm list -g $module &> /dev/null; then
+	if ! npm list -g $module &>/dev/null; then
 		echo_install "Installing $module"
 		npm install $module -g --silent >/dev/null
 		print_in_green "${bold}✓ installed!${normal}\n"
