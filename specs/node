@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source "$CWD/pretty-print"
+source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 modules=(
     eslint
@@ -11,7 +11,7 @@ title "Node"
 if ! brew list nvm &>/dev/null; then
 	step "Installing NVM…"
 	brew install nvm > /dev/null
-	nvm install node &> /dev/null
+	nvm install node > /dev/null
 	mkdir -p $HOME/.nvm
 	print_success "nvm installed!"
 else
@@ -23,12 +23,12 @@ export NVM_DIR="$HOME/.nvm"
 nvm use node > /dev/null
 
 for module in "${modules[@]}"; do
-	if ! npm list -g $module &> /dev/null; then
+	if ! npm list -g $module > /dev/null; then
 		echo_install "Installing $module"
-		npm install $module -g --silent >/dev/null
+		npm install $module -g --silent > /dev/null
 		print_in_green "${bold}✓ installed!${normal}\n"
 	else
 		print_success_muted "$module"
-		npm update $module -g --silent >/dev/null
+		npm update $module -g --silent > /dev/null
 	fi
 done

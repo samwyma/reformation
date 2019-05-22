@@ -6,7 +6,7 @@ Reform is a shell script to set up and keep your Mac 'in form'.
 
 It can be run multiple times on the same machine safely. It installs, upgrades, or skips packages based on the current system state.
 
-## Install
+## Usage
 
 ```sh
 git clone git@github.com:landtechnologies/reformation.git && cd reformation
@@ -15,9 +15,12 @@ git clone git@github.com:landtechnologies/reformation.git && cd reformation
 Reform!
 
 ```sh
-./reform
+./reform 2>&1 | tee ~/reform.log
 ./reform --force    # Force a re-install of any specs and mods
 ./reform --help     # Show the help text
+
+# want to run one thing?
+./specs/brews
 ```
 
 ## Specs
