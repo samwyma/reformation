@@ -35,6 +35,5 @@ Reform!
 
 `brew cask` does not recognise applications installed outside of it – in the case that the script fails, you can either remove the application from the install list or uninstall the application causing the failure and try again.
 
-- Install `python3` in the python spec
 - Ensure docker daemon is running (in kubernetes spec)
 - Hide errors about `brew link` already existing (in brew spec)
