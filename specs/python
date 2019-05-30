@@ -2,10 +2,11 @@
 source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 packages=(
-	credstash
 	pip
+	credstash
 	pipenv
-    pylint
+	pylint
+	pywatchman
 )
 
 title "Python"
