@@ -13,14 +13,16 @@ brews=(
     # kubernetes
     aws-iam-authenticator
     jsonnet
+    # password store
+    gopass
+    gnupg
     # general
     awscli
     bash
     git
-    gopass
-    gnupg
     jq
     shellcheck
+    tree
     wget
     yq
     watchman
