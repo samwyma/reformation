@@ -43,13 +43,31 @@ check_bash_version() {
    fi
 }
 
+check_update() {
+   wd=$(pwd)
+   cd "$cwd"
+
+   git fetch origin > /dev/null
+   if [[ $(git rev-parse HEAD) != $(git rev-parse @{u}) ]]; then
+      if git stash > /dev/null && git pull --rebase --stat origin master > /dev/null && git stash pop > /dev/null; then
+         print_success "Reformation (updated)"
+      else
+         print_error "There was an error when updating Reformation"
+      fi
+   else
+      print_success_muted "Reformation (latest)"
+   fi
+
+   cd "$wd"
+}
+
 check_internet_connection() {
-    if ! ping -c1 google.com &> /dev/null; then
-        print_error "Please check your internet connection";
-        exit 1
-    else
-        print_success "Internet connection";
-    fi
+   if ! ping -c1 google.com &> /dev/null; then
+      print_error "Please check your internet connection";
+      exit 1
+   else
+      print_success "Internet connection";
+   fi
 }
 
 check_ssh_key() {
@@ -63,7 +81,7 @@ check_ssh_key() {
             inform 'Public key copied! Paste into Github…'
             [[ -f $key ]] && cat $key | pbcopy
             open 'https://github.com/account/ssh'
-            read -p "   ✦  Press enter to continue…"
+            read -r -p "   ✦  Press enter to continue…"
          fi
 
          print_success "SSH key";
@@ -74,11 +92,11 @@ check_ssh_key() {
 }
 
 check_path_entry() {
-   if ! [ -x "$(command -v reform1)" ]; then
-      print_error "\$PATH entry missing"
+   if ! [ -x "$(command -v reform)" ]; then
+      print_error "reform \$PATH entry missing"
       print_error "Add to your shell's rc file: PATH=\"$cwd/:\$PATH\""
    else
-      print_success "$PATH entry"
+      print_success "reform \$PATH entry"
    fi
 }
 
@@ -155,8 +173,9 @@ ${dim}$BASH ${normal}${dim}v$BASH_VERSION${reset}
 
 chapter "Prerequisites…"
 check_internet_connection
-check_ssh_key
+check_update
 check_path_entry
+check_ssh_key
 
 chapter "Dependencies…"
 install_xcode
