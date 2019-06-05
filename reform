@@ -50,10 +50,13 @@ check_update() {
    git fetch origin > /dev/null
    if [[ $(git rev-parse HEAD) != $(git rev-parse @{u}) ]]; then
       if git stash > /dev/null && git pull --rebase --stat origin master > /dev/null && git stash pop > /dev/null; then
-         print_success "Reformation (updated)"
+         print_warning "Reformation Updated"
+         print_warning "Please re-run 'reform'"
       else
          print_error "There was an error when updating Reformation"
       fi
+
+      exit 1
    else
       print_success_muted "Reformation (latest)"
    fi
