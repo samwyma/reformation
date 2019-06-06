@@ -2,15 +2,12 @@
 source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 casks=(
-    docker
-    firefox
-    google-chrome
-    gpg-suite
-    iterm2
-    postman
-    robo-3t
-    slack
-    visual-studio-code
+    openoffice
+    shiftit
+    signal
+    skitch
+    syncthing-app
+    tunnelblick
 )
 
 title "Casks"

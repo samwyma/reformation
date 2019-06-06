@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
+
+echo_install "Setting defaults"
+
+## updates
+defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
+## finder
+defaults write com.apple.finder AppleShowAllFiles -string YES &&
+## dock
+defaults write com.apple.dock tilesize -int 32; killall Dock &&
+defaults write com.apple.dock orientation left &&
+## disable natural scrolling
+defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false &&
+## autocorrect spelling
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool true;
+## stop .DS_Store files being created
+defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+
+print_in_green "${bold}✓ applied!${normal}\n"
