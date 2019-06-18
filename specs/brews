@@ -24,7 +24,6 @@ brews=(
     shellcheck
     tree
     wget
-    yq
     watchman
 )
 
