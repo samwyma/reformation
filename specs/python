@@ -2,8 +2,9 @@
 source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 packages=(
-	awsebcli
 	pip
+	awscli
+	awsebcli
 	credstash
 	pipenv
 	pylint
@@ -13,12 +14,25 @@ packages=(
 
 title "Python"
 
-if [ "$FORCE" = true ] || ! brew list python3 > /dev/null; then
-	step "Installing Python…"
-	brew install python3 > /dev/null
+if [ "$FORCE" = true ] || ! brew list pyenv > /dev/null; then
+	step "Installing pyenv"
+	brew install pyenv > /dev/null
+	print_in_green "${bold}✓ installed!${normal}\n"
+fi
+
+version="3.7.3"
+
+if ! pyenv versions | grep -q $version; then
+	echo_install "Installing python v$version"
+	pyenv install $version &> /dev/null
+	pyenv global $version &> /dev/null
+	print_in_green "${bold}✓ installed!${normal}\n"
+else
+	print_success_muted "python $version (pyenv)"
 fi
 
 for package in "${packages[@]}"; do
+	echo_install "Upgrading $package"
 	pip3 install --upgrade --user $package --quiet
-	print_success_muted "$package"
+	print_in_green "${bold}✓ done!${normal}\n"
 done
