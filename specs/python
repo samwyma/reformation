@@ -33,6 +33,6 @@ fi
 
 for package in "${packages[@]}"; do
 	echo_install "Upgrading $package"
-	pip3 install --upgrade --user $package --quiet
+	pip3 install --upgrade $package --quiet
 	print_in_green "${bold}✓ done!${normal}\n"
 done
