@@ -31,6 +31,8 @@ else
 	print_success_muted "python $version (pyenv)"
 fi
 
+eval "$(pyenv init -)"
+
 for package in "${packages[@]}"; do
 	echo_install "Upgrading $package"
 	pip3 install --upgrade $package --quiet
