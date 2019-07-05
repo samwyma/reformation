@@ -1,26 +1,29 @@
 #!/usr/bin/env bash
 source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
+node_major="8"
+node_ver="latest-v$node_major.x"
+
 modules=(
-    eslint
+	eslint
 	prettier
 )
 
 title "Node"
 
-if ! brew list nvm &>/dev/null; then
-	step "Installing NVM…"
-	brew install nvm > /dev/null
-	nvm install node > /dev/null
-	mkdir -p $HOME/.nvm
-	print_success "nvm installed!"
+if command -v fnm &>/dev/null; then
+	print_success_muted "fnm already installed. Skipping."
 else
-	print_success_muted "nvm already installed. Skipping."
+	step "Installing FNM…"
+	brew install Schniz/tap/fnm > /dev/null
+	print_success "fnm installed!"
 fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && source "/usr/local/opt/nvm/nvm.sh"
-nvm use node > /dev/null
+eval "$(fnm env)"
+
+step "Installing Node…"
+fnm install $node_ver > /dev/null
+fnm use $node_major > /dev/null
 
 for module in "${modules[@]}"; do
 	if ! npm list -g $module > /dev/null; then
