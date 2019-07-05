@@ -25,6 +25,8 @@ brews=(
     tree
     wget
     watchman
+    Schniz/tap/fnm
+    hub
 )
 
 title "Brews"
