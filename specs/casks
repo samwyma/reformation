@@ -36,3 +36,6 @@ for cask in "${casks[@]}"; do
         fi
     fi
 done
+
+# start services
+open /Applications/Docker.app

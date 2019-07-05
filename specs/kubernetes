@@ -18,6 +18,7 @@ if [[ ! ":$PATH:" == *":$HOME/.bin:"* ]]; then
   print_error "Add to your shell's rc file: PATH=\"\$HOME/.bin:\$PATH\""
 fi
 
+### kubectl
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/kubectl" ] || [ "$(kubectl version --client --output=json | jq -r .clientVersion.gitVersion)" != $kubectl_version ]; then
   echo_install "Installing kubectl"
   curl -L -s https://storage.googleapis.com/kubernetes-release/release/$kubectl_version/bin/darwin/amd64/kubectl > "$HOME/.bin/kubectl" && chmod +x "$HOME/.bin/kubectl"
@@ -26,6 +27,7 @@ else
   print_success_muted "kubectl"
 fi
 
+### helm
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/helm" ] || ! helm version --client --short | grep -q "$helm_version+"; then
   echo_install "Installing helm"
   curl -L -s https://kubernetes-helm.storage.googleapis.com/helm-$helm_version-darwin-amd64.tar.gz | tar xf - --strip=1 -C "$HOME/.bin" darwin-amd64/helm
@@ -33,7 +35,9 @@ if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/helm" ] || ! helm version --client 
 else
   print_success_muted "helm"
 fi
+helm init -c > /dev/null
 
+### kops
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/kops" ] || ! kops version | grep -q " $kops_version "; then
   echo_install "Installing kops"
   curl -L -s https://github.com/kubernetes/kops/releases/download/${kops_version}/kops-darwin-amd64 -o "$HOME/.bin/kops" && chmod +x "$HOME/.bin/kops"

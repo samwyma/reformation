@@ -17,7 +17,6 @@ brews=(
     gopass
     gnupg
     # general
-    awscli
     bash
     git
     jq
@@ -57,8 +56,3 @@ for brew in "${brews[@]}"; do
 done
 
 brew cleanup &> /dev/null
-
-# This is a hack to get watchman working in python 3
-# https://github.com/facebook/watchman/issues/631
-watchman_version="$(brew list --versions watchman | tr ' ' '/')"
-sed -i '' 's/basestring/str/g' "/usr/local/Cellar/$watchman_version/libexec/bin/watchman-make"
