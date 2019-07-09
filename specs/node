@@ -12,7 +12,13 @@ modules=(
 title "Node"
 
 if command -v fnm &>/dev/null; then
-	print_success_muted "fnm already installed. Skipping."
+	if brew outdated fnm | grep -q fnm; then
+        echo_install "Upgrading fnm"
+        brew upgrade Schniz/tap/fnm > /dev/null
+	    print_in_green "${bold}✓ upgraded!${normal}\n"
+    else
+       print_success_muted "fnm"
+    fi
 else
 	step "Installing FNM…"
 	brew install Schniz/tap/fnm > /dev/null
