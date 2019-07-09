@@ -21,8 +21,14 @@ fi
 
 eval "$(fnm env)"
 
-step "Installing Node…"
-fnm install $node_ver > /dev/null
+if ! fnm ls | grep -q "v$node_major."; then
+	echo_install "Installing node v$node_major"
+	fnm install $node_ver &> /dev/null
+	print_in_green "${bold}✓ installed!${normal}\n"
+else
+	print_success_muted "node v$node_major"
+fi
+
 fnm use $node_major > /dev/null
 
 for module in "${modules[@]}"; do
