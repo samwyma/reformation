@@ -77,11 +77,16 @@ install_reformrc(){
    template_file=".reformrc.template"
 
    if [ "$REFORMRC" != "1" ]; then
-      if [ ! -f "$(pwd)/$template_file" ]; then
+      REFORMATION_DIR=$(pwd)
+
+      if [ -x "$(which reform)" ]; then
+         REFORMATION_DIR=$(dirname $(which reform))
+      fi
+
+      if [ ! -f "$REFORMATION_DIR/$template_file" ]; then
          print_error "Please run initial reform from within reformation repository."
          exit 1
       fi
-      REFORMATION_DIR=$(pwd)
 
       print_error "Please add 'source \$HOME/.reformrc' to your shell profile."
    fi
