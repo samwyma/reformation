@@ -26,6 +26,7 @@ brews=(
     watchman
     Schniz/tap/fnm
     hub
+    coreutils
 )
 
 title "Brews"
