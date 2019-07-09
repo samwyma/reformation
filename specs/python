@@ -39,3 +39,7 @@ for package in "${packages[@]}"; do
 	pip3 install --upgrade $package --quiet
 	print_in_green "${bold}✓ done!${normal}\n"
 done
+
+# This is a hack to get watchman working in python 3
+# https://github.com/facebook/watchman/issues/631
+sed -i '' 's/basestring/str/g' ~/.pyenv/versions/$version/bin/watchman-make
