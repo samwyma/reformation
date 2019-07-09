@@ -73,13 +73,26 @@ check_ssh_key() {
    fi
 }
 
-check_path_entry() {
-   if ! [ -x "$(command -v reform)" ]; then
-      print_error "reform \$PATH entry missing"
-      print_error "Add to your shell's rc file: PATH=\"$cwd/:\$PATH\""
-   else
-      print_success "reform \$PATH entry"
+install_reformrc(){
+   template_file=".reformrc.template"
+
+   if [ "$REFORMRC" != "1" ]; then
+      if [ ! -f "$(pwd)/$template_file" ]; then
+         print_error "Please run initial reform from within reformation repository."
+         exit 1
+      fi
+      REFORMATION_DIR=$(pwd)
+
+      print_error "Please add 'source \$HOME/.reformrc' to your shell profile."
    fi
+
+   ref_template="$REFORMATION_DIR/$template_file"
+
+   cat $ref_template \
+      | sed "s|~ref_path~|${REFORMATION_DIR}|g" \
+      >  $HOME/.reformrc
+   source $HOME/.reformrc
+   print_success ".reformrc copied to HOME directory."
 }
 
 install_homebrew() {
@@ -155,7 +168,7 @@ ${dim}$BASH ${normal}${dim}v$BASH_VERSION${reset}
 
 chapter "Prerequisites…"
 check_internet_connection
-check_path_entry
+install_reformrc
 check_ssh_key
 
 chapter "Dependencies…"
