@@ -13,16 +13,16 @@ title "Node"
 
 if command -v fnm &>/dev/null; then
 	if brew outdated fnm | grep -q fnm; then
-        echo_install "Upgrading fnm"
+        echo_install "Upgrading FNM…"
         brew upgrade Schniz/tap/fnm > /dev/null
 	    print_in_green "${bold}✓ upgraded!${normal}\n"
     else
        print_success_muted "fnm"
     fi
 else
-	step "Installing FNM…"
+	echo_install "Installing FNM…"
 	brew install Schniz/tap/fnm > /dev/null
-	print_success "fnm installed!"
+	print_in_green "${bold}✓ upgraded!${normal}\n"
 fi
 
 eval "$(fnm env)"
