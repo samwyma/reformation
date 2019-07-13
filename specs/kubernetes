@@ -46,8 +46,6 @@ else
   print_success_muted "kops"
 fi
 
-docker pull golang > /dev/null
-
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/jb" ]; then
   echo_install "Installing jsonnet-bundler"
   docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
