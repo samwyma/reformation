@@ -35,14 +35,6 @@ set -e
 # FUNCTIONS
 ###############################################################################
 
-check_bash_version() {
-   if ((BASH_VERSINFO[0] < 3))
-   then
-      print_error "Sorry, you need at least bash-3.0 to run this script."
-      exit 1
-   fi
-}
-
 check_internet_connection() {
    if ! ping -c1 google.com &> /dev/null; then
       print_error "Please check your internet connection";
@@ -93,11 +85,9 @@ install_reformrc(){
 
    ref_template="$REFORMATION_DIR/$template_file"
 
-   cat $ref_template \
-      | sed "s|~ref_path~|${REFORMATION_DIR}|g" \
-      >  $HOME/.reformrc
-   source $HOME/.reformrc
-   print_success ".reformrc copied to HOME directory."
+   cat $ref_template | sed "s|~ref_path~|${REFORMATION_DIR}|g" > "$HOME/.reformrc"
+   source "$HOME/.reformrc"
+   print_success ".reformrc copied to \$HOME directory."
 }
 
 install_homebrew() {
@@ -126,23 +116,23 @@ install_xcode() {
 }
 
 install_specs() {
-   if [ ! -d "$cwd/specs" ] && [ -z "$(ls -A $cwd/specs)" ]; then
+   if [ ! -d "$cwd/specs" ] && [ -z "$(ls -A "$cwd"/specs)" ]; then
       print_warning "No specs found. Skipping."
       return
    fi
 
-   for spec in $cwd/specs/*; do
+   for spec in "$cwd"/specs/*; do
       "$spec" 
    done
 }
 
 install_mods() {
-   if [ ! -d "$cwd/mods" ] || [ -z "$(ls -A $cwd/mods)" ]; then
+   if [ ! -d "$cwd/mods" ] || [ -z "$(ls -A "$cwd"/mods)" ]; then
       print_warning "No mods found. Skipping."
       return
    fi
 
-   for mod in $cwd/mods/*; do
+   for mod in "$cwd"/mods/*; do
       "$mod" 
    done
 }
@@ -151,8 +141,7 @@ install_mods() {
 # Reform!                    http://patorjk.com/software/taag/ ( font: Script )
 ###############################################################################
 
-check_bash_version
-source $cwd/pretty-print
+source "$cwd/pretty-print"
 
 printf "
             ___                   _   _         
@@ -168,12 +157,11 @@ printf "
 │  It ${green}installs${reset}, ${blue}upgrades${reset}, or ${yellow}skips${reset} packages based   │
 │  on what is already installed on the machine.     │
 ╰───────────────────────────────────────────────────╯
-${dim}$BASH ${normal}${dim}v$BASH_VERSION${reset}
 "
 
 chapter "Prerequisites…"
-check_internet_connection
 install_reformrc
+check_internet_connection
 check_ssh_key
 
 chapter "Dependencies…"
