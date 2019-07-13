@@ -22,7 +22,7 @@ fi
 
 version="3.7.3"
 
-if ! pyenv versions | grep -q $version; then
+if [ "$FORCE" = true ] ||  ! pyenv versions | grep -q $version; then
 	echo_install "Installing python v$version"
 	pyenv install $version &> /dev/null
 	pyenv global $version &> /dev/null
