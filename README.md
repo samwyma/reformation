@@ -34,5 +34,3 @@ Reform!
 ## Known Issues
 
 `brew cask` does not recognise applications installed outside of it – in the case that the script fails, you can either remove the application from the install list or uninstall the application causing the failure and try again.
-
-- Ensure docker daemon is running (in kubernetes spec)
