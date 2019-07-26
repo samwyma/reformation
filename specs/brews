@@ -16,6 +16,9 @@ brews=(
     # password store
     gopass
     gnupg
+    # bash testing
+    bats
+    expect
     # general
     bash
     git
