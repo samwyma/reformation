@@ -20,8 +20,9 @@ brews=(
     bats
     expect
     # general
-    bash
+    bash # latest bash (osx uses an old version)
     git
+    grep # full grep (osx has a reduced-feature version)
     jq
     shellcheck
     tree
@@ -59,3 +60,9 @@ for brew in "${brews[@]}"; do
 done
 
 brew cleanup &> /dev/null
+
+if [[ ! ":$PATH:" == *":/usr/local/opt/grep/libexec/gnubin:"* ]]; then
+  print_error "\$PATH entry missing"
+  print_error "Add to your shell's rc file: PATH=\"/usr/local/opt/grep/libexec/gnubin:\$PATH\""
+  print_error "This is required to ensure you use 'brew' app versions over default OSX versions"
+fi
