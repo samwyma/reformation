@@ -14,7 +14,7 @@ packages=(
 
 title "Python"
 
-if [ "$FORCE" = true ] || ! brew list pyenv > /dev/null; then
+if [ "$FORCE" = true ] || ! brew list pyenv &> /dev/null; then
 	step "Installing pyenv"
 	brew install pyenv > /dev/null
 	print_in_green "${bold}✓ installed!${normal}\n"
