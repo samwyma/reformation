@@ -71,8 +71,8 @@ install_reformrc(){
    if [ "$REFORMRC" != "1" ]; then
       REFORMATION_DIR=$(pwd)
 
-      if [ -x "$(which reform)" ]; then
-         REFORMATION_DIR=$(dirname $(which reform))
+      if [ -x "$(command -v reform)" ]; then
+         REFORMATION_DIR=$(dirname "$(command -v reform)")
       fi
 
       if [ ! -f "$REFORMATION_DIR/$template_file" ]; then
