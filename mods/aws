@@ -6,7 +6,7 @@ title "AWS"
 echo_install "Accounts Config"
 mkdir -p ~/.landtech
 gopass sync > /dev/null
-gopass landtech/aws/accounts.json > ~/.landtech/accounts.json
+gopass aws/accounts.json > ~/.landtech/accounts.json
 print_in_green "${bold}✓ done!${normal}\n"
 
 title "AWS Profiles"
