@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
+
+title "AWS"
+
+echo_install "Accounts Config"
+mkdir -p ~/.landtech
+gopass sync > /dev/null
+gopass landtech/aws/accounts.json > ~/.landtech/accounts.json
+print_in_green "${bold}✓ done!${normal}\n"
+
+title "AWS Profiles"
+for account in $(jq -r 'keys[]' < ~/.landtech/accounts.json); do
+    echo_install "$account"
+    aws configure set "$account".region eu-west-1
+    aws configure set "$account".region json
+    print_in_green "${bold}✓ done!${normal}\n"
+done
