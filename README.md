@@ -23,6 +23,10 @@ Reform!
 ./specs/brews
 ```
 
+## First Run
+
+Running `./reform` for the first time will add a `~/.reformrc` to your `$HOME` directory. Adding `source ~\.reformrc` to your shell profile will allow you to run `reform` from anywhere for added convenience!
+
 ## Specs
 
 `reform` loops over and executes all 'specs' defined in the `./specs` folder. 'Specs' are used for installing packages, frameworks, libraries etc...
