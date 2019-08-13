@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+### VARIABLES
+
+if [ -p /dev/stdin ]; then
+  config="$(</dev/stdin)"
+else
+  config=$(cat ~/.landtech/accounts.json)
+fi
+
+profile="${AWS_PROFILE:=default}"
+
+for var in "$@"
+do
+  case "$var" in
+    --profile)
+      profile="$2"
+      ;;
+    --account)
+      account="$2"
+      ;;
+    --role)
+      role="$2"
+      ;;
+    --duration)
+      duration="$2"
+      ;;
+    --help)
+      echo "Usage:
+    --profile        : Your AWS CLI profile, ie 'default'
+    --account        : The AWS Account where the role resides, e.g. 'production', 'sandbox', 'backup'
+    --role           : The role to assume, e.g. 'administrator', 'engineer'
+    --duration       : The life of the session (in seconds) when assuming a role
+
+Example:
+aws-assume-role --account sandbox --role administrator --profile default --duration 600
+      "
+      exit 0
+      ;;
+  esac
+  shift
+done
+
+### FUNCTIONS
+
+set_account() {
+  # read accounts from json into a bash array
+  mapfile -t accounts < <(jq -r 'keys[]' <<< "$config")
+
+  if [[ ! -v account ]]; then
+      echo 'Which account are you accessing?'
+      select account in "${accounts[@]}"
+      do
+          break
+      done < /dev/tty # read from terminal (not /dev/stdin)
+      echo
+  fi
+  
+  if ! jq .$account.id >/dev/null 2>&1 <<< "$config"; then
+      echo "Error - unknown account"
+      exit 1
+  fi
+
+  account_id=$(jq -r .$account.id  <<< "$config")
+}
+
+set_role() {
+  if [[ ! -v role ]]; then
+    # read accounts from json into a bash array
+    mapfile -t roles < <(jq -r .$account.roles[]  <<< "$config")
+
+      if [[ ${#roles[@]} == 1 ]]; then
+        echo "Only one role available...using role: ${roles[0]}"
+        role=${roles[0]}
+      else
+        echo "Which role do you want to assume?"
+        select role in "${roles[@]}"
+        do
+            break
+        done < /dev/tty # read from terminal (not /dev/stdin)
+      fi
+      echo
+  fi
+}
+
+set_duration() {
+  if [[ ! -v duration ]]; then
+    minutes=$(jq -r .$account.session_duration.minutes <<< "$config")
+    duration=$((minutes*60))
+  fi
+}
+
+get_session_token() {
+  "$(cd "$(dirname "$0")" && pwd)/aws-get-session-token"
+  profile="mfa"
+}
+
+### ASSUME-ROLE
+
+set_account
+set_role
+set_duration
+
+if $(jq .$account.mfa <<< "$config") == "true"; then
+  get_session_token
+fi
+
+echo "Assuming role..."
+response=$(aws sts assume-role \
+    --role-arn arn:aws:iam::$account_id:role/$role \
+    --role-session-name "$account-session" \
+    --duration-seconds "$duration" \
+    --profile $profile)
+
+aws configure set profile.${account}.aws_access_key_id $(jq -r .Credentials.AccessKeyId <<< "$response")
+aws configure set profile.${account}.aws_secret_access_key $(jq -r .Credentials.SecretAccessKey <<< "$response")
+aws configure set profile.${account}.aws_session_token $(jq -r .Credentials.SessionToken <<< "$response")
+
+echo "Profile: ${account}"
+echo "$response" | jq .
