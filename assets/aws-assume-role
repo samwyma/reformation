@@ -11,7 +11,6 @@ else
 fi
 
 profile="${AWS_PROFILE:=default}"
-apply=false
 
 for var in "$@"
 do
@@ -34,7 +33,6 @@ do
     --account <string>   : The AWS Account where the role resides
     --role <string>      : The role to assume
     --duration <int>     : The life of the session (in seconds) when assuming a role
-    --apply              : Set the profile to the one being created, ie export AWS_PROFILE=sandbox
 
 Example:
 aws-assume-role --account sandbox --role administrator --profile default --duration 600
