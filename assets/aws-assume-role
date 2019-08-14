@@ -34,8 +34,9 @@ do
     --role <string>      : The role to assume
     --duration <int>     : The life of the session (in seconds) when assuming a role
 
-Example:
+Examples:
 aws-assume-role --account sandbox --role administrator --profile default --duration 600
+aws-assume-role < ~/account.json
       "
       exit 0
       ;;
