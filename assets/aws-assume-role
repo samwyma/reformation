@@ -69,8 +69,8 @@ set_account() {
 
 set_role() {
   if [[ ! -v role ]]; then
-    # read accounts from json into a bash array
-    mapfile -t roles < <(jq -r ."$account".roles[]  <<< "$config")
+      # read accounts from json into a bash array
+      mapfile -t roles < <(jq -r ."$account".roles[]  <<< "$config")
 
       if [[ ${#roles[@]} == 1 ]]; then
         echo "Only one role available...using role: ${roles[0]}"
