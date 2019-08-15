@@ -13,19 +13,18 @@ packages=(
 )
 
 title "Python"
+version=$(pyenv install --list | grep "^\s*[0-9]\.[0-9]\.[0-9]$" | tail -1 | xargs)
 
-if [ "$FORCE" = true ] || ! brew list pyenv &> /dev/null; then
+if [ "$FORCE" = true ] || ! brew list pyenv &>/dev/null; then
 	step "Installing pyenv"
-	brew install pyenv > /dev/null
+	brew install pyenv >/dev/null
 	print_in_green "${bold}✓ installed!${normal}\n"
 fi
 
-version="3.7.3"
-
-if [ "$FORCE" = true ] ||  ! pyenv versions | grep -q $version; then
+if [ "$FORCE" = true ] || ! pyenv versions | grep -q "$version"; then
 	echo_install "Installing python v$version"
-	pyenv install $version &> /dev/null
-	pyenv global $version &> /dev/null
+	pyenv install "$version" &>/dev/null
+	pyenv global "$version" &>/dev/null
 	print_in_green "${bold}✓ installed!${normal}\n"
 else
 	print_success_muted "python $version (pyenv)"
@@ -36,10 +35,10 @@ eval "$(pyenv init -)"
 
 for package in "${packages[@]}"; do
 	echo_install "Upgrading $package"
-	pip3 install --upgrade $package --quiet
+	pip3 install --upgrade "$package" --quiet
 	print_in_green "${bold}✓ done!${normal}\n"
 done
 
 # This is a hack to get watchman working in python 3
 # https://github.com/facebook/watchman/issues/631
-sed -i '' 's/basestring/str/g' ~/.pyenv/versions/$version/bin/watchman-make
+sed -i '' 's/basestring/str/g' ~/.pyenv/versions/"$version"/bin/watchman-make
