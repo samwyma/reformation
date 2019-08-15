@@ -19,9 +19,9 @@ underline="\e[37;4m"
 
 _print_in_color() {
     printf "%b" \
-        "$(tput setaf "$2" 2> /dev/null)" \
+        "$(tput setaf "$2" 2>/dev/null)" \
         "$1" \
-        "$(tput sgr0 2> /dev/null)"
+        "$(tput sgr0 2>/dev/null)"
 }
 
 print_in_red() {
@@ -106,8 +106,8 @@ ask() {
 
         # Check if the reply is valid
         case "$reply" in
-            Y*|y*) return 0 ;;
-            N*|n*) return 1 ;;
+        Y* | y*) return 0 ;;
+        N* | n*) return 1 ;;
         esac
 
     done
@@ -117,21 +117,24 @@ ask() {
 # Text Formatting
 ###############################################################################
 chapter() {
-    local fmt="$1"; shift
+    local fmt="$1"
+    shift
     printf "\n✦  ${bold}$((count++)). $fmt${normal}\n└─────────────────────────────────────────────────────○\n" "$@"
 }
 
 title() {
-    printf "\n$1:\n" 
+    printf "\n$1:\n"
 }
 
 echo_install() {
-    local fmt="$1"; shift
+    local fmt="$1"
+    shift
     printf "  [↓] $fmt " "$@"
 }
 
 inform() {
-    local fmt="$1"; shift
+    local fmt="$1"
+    shift
     printf "   ✦  $fmt\n" "$@"
 }
 

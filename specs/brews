@@ -20,7 +20,7 @@ brews=(
     bats
     expect
     # general
-    bash # latest bash (osx uses an old version)
+    bash # latest bash (see above)
     git
     grep # full grep (osx has a reduced-feature version)
     jq
@@ -32,37 +32,44 @@ brews=(
     coreutils
 )
 
+title "Homebrew"
+
+echo_install "Updating"
+brew update >/dev/null
+print_in_green "${bold}✓ done!${normal}\n"
+
+echo_install "Cleaning"
+brew cleanup &>/dev/null
+print_in_green "${bold}✓ done!${normal}\n"
+
 title "Brews"
 
-brew update > /dev/null
 installed=$(brew list)
 outdated=$(brew outdated)
 
 for brew in "${brews[@]}"; do
-    if ! echo "$installed" | grep -q $brew; then
+    if ! echo "$installed" | grep -q "$brew"; then
         echo_install "Installing $brew"
-		brew install $brew > /dev/null
-        brew link --overwrite $brew &> /dev/null
-		print_in_green "${bold}✓ installed!${normal}\n"
-	else
+        brew install "$brew" >/dev/null
+        brew link --overwrite "$brew" &>/dev/null
+        print_in_green "${bold}✓ installed!${normal}\n"
+    else
         if [ "$FORCE" = true ]; then
             echo_install "Reinstalling $brew"
-            brew reinstall "$brew" > /dev/null
-		    print_in_green "${bold}✓ installed!${normal}\n"
+            brew reinstall "$brew" >/dev/null
+            print_in_green "${bold}✓ installed!${normal}\n"
         elif echo "$outdated" | grep -q "$brew"; then
             echo_install "Upgrading $brew"
-            brew upgrade "$brew" > /dev/null
-		    print_in_green "${bold}✓ upgraded!${normal}\n"
+            brew upgrade "$brew" >/dev/null
+            print_in_green "${bold}✓ upgraded!${normal}\n"
         else
             print_success_muted "$brew"
         fi
     fi
 done
 
-brew cleanup &> /dev/null
-
 if [[ ! ":$PATH:" == *":/usr/local/opt/grep/libexec/gnubin:"* ]]; then
-  print_error "\$PATH entry missing"
-  print_error "Add to your shell's rc file: PATH=\"/usr/local/opt/grep/libexec/gnubin:\$PATH\""
-  print_error "This is required to ensure you use 'brew' app versions over default OSX versions"
+    print_error "\$PATH entry missing"
+    print_error "Add to your shell's rc file: PATH=\"/usr/local/opt/grep/libexec/gnubin:\$PATH\""
+    print_error "This is required to ensure you use 'brew' app versions over default OSX versions"
 fi
