@@ -13,15 +13,15 @@ title "Node"
 
 if [ ! "$FORCE" = true ] && command -v fnm &>/dev/null; then
 	if brew outdated fnm | grep -q fnm; then
-        echo_install "Upgrading FNM…"
-        brew upgrade Schniz/tap/fnm > /dev/null
-	    print_in_green "${bold}✓ upgraded!${normal}\n"
-    else
-       print_success_muted "fnm"
-    fi
+		echo_install "Upgrading FNM…"
+		brew upgrade Schniz/tap/fnm &>/dev/null
+		print_in_green "${bold}✓ upgraded!${normal}\n"
+	else
+		print_success_muted "fnm"
+	fi
 else
 	echo_install "Installing FNM…"
-	brew install Schniz/tap/fnm > /dev/null
+	brew install Schniz/tap/fnm &>/dev/null
 	print_in_green "${bold}✓ upgraded!${normal}\n"
 fi
 
@@ -29,21 +29,21 @@ eval "$(fnm env)"
 
 if [ "$FORCE" = true ] || ! fnm ls | grep -q "v$node_major."; then
 	echo_install "Installing node v$node_major"
-	fnm install $node_ver &> /dev/null
+	fnm install $node_ver &>/dev/null
 	print_in_green "${bold}✓ installed!${normal}\n"
 else
 	print_success_muted "node v$node_major"
 fi
 
-fnm use $node_major > /dev/null
+fnm use $node_major >/dev/null
 
 for module in "${modules[@]}"; do
-	if ! npm list -g $module > /dev/null; then
+	if ! npm list -g $module >/dev/null; then
 		echo_install "Installing $module"
-		npm install $module -g --silent > /dev/null
+		npm install $module -g --silent >/dev/null
 		print_in_green "${bold}✓ installed!${normal}\n"
 	else
 		print_success_muted "$module"
-		npm update $module -g --silent > /dev/null
+		npm update $module -g --silent >/dev/null
 	fi
 done
