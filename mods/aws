@@ -13,7 +13,7 @@ print_in_green "${bold}✓ done!${normal}\n"
 for account in $(jq -r 'keys[]' < ~/.landtech/accounts.json); do
     echo_install "aws cli profile: $account"
     aws configure set "$account".region eu-west-1
-    aws configure set "$account".region json
+    aws configure set "$account".output json
     print_in_green "${bold}✓ done!${normal}\n"
 done
 
