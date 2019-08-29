@@ -10,6 +10,7 @@ packages=(
 	pylint
 	pywatchman
 	yq
+	docker-compose
 )
 
 title "Python"
