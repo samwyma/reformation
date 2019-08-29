@@ -30,6 +30,7 @@ brews=(
     watchman
     hub
     coreutils
+    gnu-sed
 )
 
 title "Homebrew"
