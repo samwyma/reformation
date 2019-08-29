@@ -41,4 +41,4 @@ done
 
 # This is a hack to get watchman working in python 3
 # https://github.com/facebook/watchman/issues/631
-sed -i 's/basestring/str/g' ~/.pyenv/versions/"$version"/bin/watchman-make
+gsed -i 's/basestring/str/g' ~/.pyenv/versions/"$version"/bin/watchman-make
