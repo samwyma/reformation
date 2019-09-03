@@ -2,6 +2,7 @@
 source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 packages=(
+	black
 	pip
 	credstash
 	pipenv
