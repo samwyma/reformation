@@ -10,6 +10,7 @@ source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 # https://itnext.io/upgrading-bash-on-macos-7138bd1066ba
 
 brews=(
+    awscli
     # kubernetes
     aws-iam-authenticator
     jsonnet
