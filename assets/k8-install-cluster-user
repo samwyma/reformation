@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# Installs and uses a kubectl context which authenticates with the kubernetes cluster using IAM
+# Args:
+#   --aws-profile <profile> - OPTIONAL - Will always use the profile with this name (in your aws creds) for authenticating with the cluster
+#                                        Otherwise, will use whatever profile is set in the current shell (or 'default' if none)
+#   --cluster <cluster_name> - OPTIONAL - Will set up the user and context for the given cluster
+#                                         Otherwise will use whatever cluster is in the current context
+
+set -e
+
+function echo_help {
+  echo "
+Usage:
+    -c|--cluster <string>   : The name of the cluster (e.g. k8.sandbox.landinsight.io)
+    -p|--profile <string>   : The AWS profile to use when talking to the cluster (e.g. default)
+
+Examples:
+k8-install-cluster-user -c k8.sandbox.landinsight.io -p sandbox
+k8-install-cluster-user -c k8.staging.landinsight.io -p default
+"
+}
+
+for var in "$@"
+do
+  case "$var" in
+    -p|--aws-profile|--profile)
+      selected_aws_profile="$2"
+      ;;
+    -c|--cluster)
+      cluster_name="$2"
+      ;;
+    --help)
+      echo_help
+      exit 0
+      ;;
+  esac
+  shift
+done
+
+if [ "$selected_aws_profile" == "" ]; then
+  echo_help
+  exit 1
+fi
+
+if [ "$cluster_name" == "" ]; then
+  echo_help
+  exit 1
+fi
+
+current_profile="${AWS_PROFILE:=default}"
+
+# Offload to the docker ci container which contains the logic
+# Mount ~/.aws to use current aws profile
+# Mount ~/.kube so config is persisted on the host
+docker pull landtech/ci-kubernetes
+docker run -it --rm \
+  -e "AWS_PROFILE=$current_profile" \
+  -v ~/.aws:/root/.aws \
+  -v ~/.kube:/root/.kube \
+  landtech/ci-kubernetes \
+  install_kube_iam_user.sh --cluster "$cluster_name" --aws-profile "$selected_aws_profile"
