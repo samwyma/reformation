@@ -9,31 +9,30 @@
 
 set -e
 
-function echo_help {
+function echo_help() {
   echo "
 Usage:
-    -c|--cluster <string>   : The name of the cluster (e.g. k8.sandbox.landinsight.io)
+    -c|--cluster <string>   : The name of the cluster (e.g. k8.example.como)
     -p|--profile <string>   : The AWS profile to use when talking to the cluster (e.g. default)
 
 Examples:
-k8-install-cluster-user -c k8.sandbox.landinsight.io -p sandbox
-k8-install-cluster-user -c k8.staging.landinsight.io -p default
+k8-install-cluster-user -c k8.sandbox.example.com -p sandbox
+k8-install-cluster-user -c k8.production.example.xom -p default
 "
 }
 
-for var in "$@"
-do
+for var in "$@"; do
   case "$var" in
-    -p|--aws-profile|--profile)
-      selected_aws_profile="$2"
-      ;;
-    -c|--cluster)
-      cluster_name="$2"
-      ;;
-    --help)
-      echo_help
-      exit 0
-      ;;
+  -p | --aws-profile | --profile)
+    selected_aws_profile="$2"
+    ;;
+  -c | --cluster)
+    cluster_name="$2"
+    ;;
+  --help)
+    echo_help
+    exit 0
+    ;;
   esac
   shift
 done
