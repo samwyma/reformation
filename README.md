@@ -33,7 +33,7 @@ Running `./reform` for the first time will add a `~/.reformrc` to your `$HOME` d
 
 ## Mods
 
-`reform` loops over and executes all 'mods' defined in the `./mods` folder. 'Mods' are used for modifying your system. Think... aliases, kernel tweaks, users etc...
+`reform` loops over and executes all 'mods' defined in the `./mods` folder. 'Mods' are used for modifying your system. Ie aliases, kernel tweaks, users etc...
 
 ## Known Issues
 
