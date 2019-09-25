@@ -2,7 +2,7 @@
 
 A cloned, refactored and heavily influenced version of [Formation](https://github.com/minamarkham/formation) by [Mina Markham](https://github.com/minamarkham) (the main difference is that `specs` and `mods` are self contained scripts that are executed by the dummed-down `./reform` parent script)
 
-Reform is a shell script to set up and keep your Mac 'in form'.
+`reform` is a shell script to set up and keep your Mac 'in form'.
 
 It can be run multiple times on the same machine safely. It installs, upgrades, or skips packages based on the current system state.
 
