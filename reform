@@ -7,19 +7,18 @@
 cwd="$(cd "$(dirname "$0")" && pwd)" # Get full directory name of this script
 export FORCE=false
 
-for var in "$@"
-do
-  case "$var" in
-    --force|-f)
+for var in "$@"; do
+   case "$var" in
+   --force | -f)
       FORCE=true
       ;;
-    --help|-h)
+   --help | -h)
       echo "Usage:
       -f, --force    : Force a re-install of all specs and mods"
       exit 0
       ;;
-  esac
-  shift
+   esac
+   shift
 done
 
 ###############################################################################
@@ -36,11 +35,11 @@ set -e
 ###############################################################################
 
 check_internet_connection() {
-   if ! ping -c1 google.com &> /dev/null; then
-      print_error "Please check your internet connection";
+   if ! ping -c1 google.com &>/dev/null; then
+      print_error "Please check your internet connection"
       exit 1
    else
-      print_success "Internet connection";
+      print_success "Internet connection"
    fi
 }
 
@@ -58,14 +57,35 @@ check_ssh_key() {
             read -r -p "   ✦  Press enter to continue…"
          fi
 
-         print_success "SSH key";
+         print_success "SSH key"
       fi
    else
-      print_success "SSH key";
+      print_success "SSH key"
    fi
 }
 
-install_reformrc(){
+update_reformation() {
+   echo_install "Updating reformation…"
+   wd=$(pwd)
+   cd "$REFORMATION_DIR"
+
+   git fetch origin >/dev/null
+   if [[ $(git rev-parse HEAD) != $(git rev-parse @{u}) ]]; then
+      if git stash >/dev/null && git pull --rebase --stat origin master >/dev/null && git stash pop >/dev/null; then
+         print_warning "Updated! Please re-run 'reform'"
+         exit 0
+      else
+         print_error "Error! Unable to update reformation"
+         exit 1
+      fi
+   else
+      print_in_green "${bold}✓ on latest\n"
+   fi
+
+   cd "$wd"
+}
+
+install_reformrc() {
    template_file=".reformrc.template"
 
    if [ "$REFORMRC" != "1" ]; then
@@ -85,7 +105,7 @@ install_reformrc(){
 
    ref_template="$REFORMATION_DIR/$template_file"
 
-   cat $ref_template | sed "s|~ref_path~|${REFORMATION_DIR}|g" > "$HOME/.reformrc"
+   cat $ref_template | sed "s|~ref_path~|${REFORMATION_DIR}|g" >"$HOME/.reformrc"
    source "$HOME/.reformrc"
    print_success ".reformrc copied to \$HOME directory."
 }
@@ -122,7 +142,7 @@ install_specs() {
    fi
 
    for spec in "$cwd"/specs/*; do
-      "$spec" 
+      "$spec"
    done
 }
 
@@ -133,7 +153,7 @@ install_mods() {
    fi
 
    for mod in "$cwd"/mods/*; do
-      "$mod" 
+      "$mod"
    done
 }
 
@@ -163,6 +183,7 @@ chapter "Prerequisites…"
 install_reformrc
 check_internet_connection
 check_ssh_key
+update_reformation
 
 chapter "Dependencies…"
 install_xcode
