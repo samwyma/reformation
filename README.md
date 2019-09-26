@@ -6,7 +6,7 @@ A cloned, refactored and heavily influenced version of [Formation](https://githu
 
 It can be run multiple times on the same machine safely. It installs, upgrades, or skips packages based on the current system state.
 
-## Usage
+## Install / First Run
 
 ```sh
 git clone git@github.com:landtechnologies/reformation.git && cd reformation
