@@ -71,13 +71,12 @@ update_reformation() {
 
    git fetch origin >/dev/null
    if [[ $(git rev-parse HEAD) != $(git rev-parse @{u}) ]]; then
-      if git stash >/dev/null && git pull --rebase --stat origin master >/dev/null && git stash pop >/dev/null; then
-         print_warning "Updated! Please re-run 'reform'"
-         exit 0
-      else
-         print_error "Error! Unable to update reformation"
-         exit 1
-      fi
+      printf "\n\n"
+      git stash >/dev/null
+      git pull --rebase --stat origin master
+      git stash pop >/dev/null
+      print_warning "Updated! Please re-run 'reform'"
+      exit 0
    else
       print_in_green "${bold}✓ on latest\n"
    fi
