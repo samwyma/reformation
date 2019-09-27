@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
+
+title "AWS Extensions"
+location="$HOME/.bin/awsx"
+
+if ! command -v awsx >/dev/null; then
+    print_warning 'Please add: ''PATH="$HOME/.bin/awsx:\$PATH"'' to your rc file'
+fi
+
+rm -Rf "$location"
+echo_install "awsx scripts"
+git clone https://github.com/landtechnologies/aws-extensions.git "$location" &>/dev/null
+print_in_green "${bold}✓ done!${normal}\n"
