@@ -1,0 +1,12 @@
+[toplevel]
+
+whoami = sts get-caller-identity
+
+region = !f() { [[ $# -eq 1 ]] && aws configure set region "$1" || aws configure get region; }; f
+
+account-id = sts get-caller-identity --output text --query "Account"
+
+image-repo = 
+    !f() {
+        echo $(aws account-id).dkr.ecr.$(aws region).amazonaws.com/$1
+    }; f

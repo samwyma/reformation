@@ -6,16 +6,21 @@ title "AWS"
 
 echo_install "accounts.json configuration"
 mkdir -p ~/.landtech
-gopass sync > /dev/null
-gopass "${GOPASS_LANDTECH_STORE}"aws/accounts.json | jq . > ~/.landtech/accounts.json
+gopass sync >/dev/null
+gopass "${GOPASS_LANDTECH_STORE}"aws/accounts.json | jq . >~/.landtech/accounts.json
 print_in_green "${bold}✓ done!${normal}\n"
 
-for account in $(jq -r 'keys[]' < ~/.landtech/accounts.json); do
+for account in $(jq -r 'keys[]' <~/.landtech/accounts.json); do
     echo_install "aws cli profile: $account"
     aws configure set "$account".region eu-west-1
     aws configure set "$account".output json
     print_in_green "${bold}✓ done!${normal}\n"
 done
+
+echo_install "aliases"
+mkdir -p "$HOME"/.aws/cli
+cp --force "$assets"/aws-alias "$HOME"/.aws/cli/alias
+print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "aws-assume-role script"
 rm -Rf ~/.bin/aws-assume-role
