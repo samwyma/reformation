@@ -7,7 +7,7 @@ echo_install "landtech config"
 mkdir -p ~/.landtech/ssh
 gopass sync >/dev/null
 user=$(aws iam get-user --profile default | jq -r .User.UserName)
-gopass "${GOPASS_LANDTECH_STORE}"ssh/config | sed "s/@user@/$USER/g" >~/.landtech/ssh/config
+gopass "${GOPASS_LANDTECH_STORE}"ssh/config | sed "s/@user@/$user/g" >~/.landtech/ssh/config
 print_in_green "${bold}✓ done!${normal}\n"
 
 if ! grep -q "Include ~/.landtech/ssh/config" ~/.ssh/config; then
