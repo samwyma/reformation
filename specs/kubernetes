@@ -10,9 +10,13 @@ argo_version="v2.3.0"
 
 if ! [ -x "$(command -v brew)" ]; then
     print_error "Docker is required, it should be included in the 'specs'"
-    return 1
+    exit 1
 fi
-
+if ! launchctl list | grep -q docker ; then 
+   print_error "Docker isn't runnning on your machine"
+   exit 1 
+fi
+exit 1
 mkdir -p "$HOME/.bin"
 if [[ ! ":$PATH:" == *":$HOME/.bin:"* ]]; then
   print_error "\$PATH entry missing"

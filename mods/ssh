@@ -5,10 +5,19 @@ title "SSH"
 
 echo_install "landtech config"
 mkdir -p ~/.landtech/ssh
-gopass sync >/dev/null
 user=$(aws iam get-user --profile default | jq -r .User.UserName)
+if [ -z ${user+x} ]; then 
+    print_error "Error getting AWS user"
+    exit 1 
+fi
+
+gopass sync >/dev/null
 gopass "${GOPASS_LANDTECH_STORE}"ssh/config | sed "s/@user@/$user/g" >~/.landtech/ssh/config
-print_in_green "${bold}✓ done!${normal}\n"
+if f [ -s ~/.landtech/ssh/config ]; then
+    print_error "Error generating ssh config" 
+else 
+    print_in_green "${bold}✓ done!${normal}\n"
+fi
 
 if ! grep -q "Include ~/.landtech/ssh/config" ~/.ssh/config; then
     sed -i '1iInclude ~/.landtech/ssh/config' ~/.ssh/config
