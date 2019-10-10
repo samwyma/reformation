@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
-# assert
-curl -o /usr/local/bin/assert.sh https://raw.github.com/lehmannro/assert.sh/v1.1/assert.sh
+title "Shell"
+
+echo_install "assert.sh"
+curl -s -o /usr/local/bin/assert.sh https://raw.github.com/lehmannro/assert.sh/v1.1/assert.sh
+print_in_green "${bold}✓ done!${normal}\n"
