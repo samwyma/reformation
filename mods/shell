@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# assert
+curl -o /usr/local/bin/assert.sh https://raw.github.com/lehmannro/assert.sh/v1.1/assert.sh
