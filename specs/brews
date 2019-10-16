@@ -26,7 +26,6 @@ brews=(
     grep # full grep (osx has a reduced-feature version)
     jq
     shellcheck
-    tree
     wget
     watchman
     hub
@@ -71,7 +70,11 @@ for brew in "${brews[@]}"; do
 done
 
 if [[ ! ":$PATH:" == *":/usr/local/opt/grep/libexec/gnubin:"* ]]; then
-    print_error "\$PATH entry missing"
+    print_error "\$PATH entry missing for 'grep'"
     print_error "Add to your shell's rc file: PATH=\"/usr/local/opt/grep/libexec/gnubin:\$PATH\""
-    print_error "This is required to ensure you use 'brew' app versions over default OSX versions"
+fi
+
+if [[ ! ":$PATH:" == *":/usr/local/opt/gnu-sed/libexec/gnubin:"* ]]; then
+    print_error "\$PATH entry missing for 'sed'"
+    print_error "Add to your shell's rc file: PATH=\"/usr/local/opt/gnu-sed/libexec/gnubin:\$PATH\""
 fi

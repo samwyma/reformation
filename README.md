@@ -21,6 +21,7 @@ Reform!
 
 # want to run one thing?
 ./specs/brews
+./mods/aws
 ```
 
 ## First Run
@@ -29,12 +30,22 @@ Running `./reform` for the first time will add a `~/.reformrc` to your `$HOME` d
 
 ## Specs
 
-`reform` loops over and executes all 'specs' defined in the `./specs` folder. 'Specs' are used for installing packages, frameworks, libraries etc...
+`reform` loops over and executes all 'specs' defined in the `./specs` folder.
+
+'Specs' concepts without dependencies, such as installing packages, frameworks, libraries etc...
 
 ## Mods
 
-`reform` loops over and executes all 'mods' defined in the `./mods` folder. 'Mods' are used for modifying your system. Ie aliases, kernel tweaks, users etc...
+`reform` loops over and executes all 'mods' defined in the `./mods` folder.
+
+'Mods' are concepts (that may require dependencies) used for modifying your system. Ie aliases, configs, users etc...
 
 ## Known Issues
 
 `brew cask` does not recognise applications installed outside of it – in the case that the script fails, you can either remove the application from the install list or uninstall the application causing the failure and try again.
+
+## Tests
+
+```bash
+make test
+```

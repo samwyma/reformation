@@ -9,8 +9,8 @@ kops_version="1.11.1"
 argo_version="v2.3.0"
 
 if ! [ -x "$(command -v brew)" ]; then
-    print_error "Docker is required, it should be included in the 'specs'"
-    return 1
+  print_error "Docker is required, it should be included in the 'specs'"
+  return 1
 fi
 
 mkdir -p "$HOME/.bin"
@@ -22,7 +22,7 @@ fi
 ### kubectl
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/kubectl" ] || [ "$(kubectl version --client --output=json | jq -r .clientVersion.gitVersion)" != $kubectl_version ]; then
   echo_install "Installing kubectl"
-  curl -L -s https://storage.googleapis.com/kubernetes-release/release/$kubectl_version/bin/darwin/amd64/kubectl > "$HOME/.bin/kubectl" && chmod +x "$HOME/.bin/kubectl"
+  curl --fail -L -s https://storage.googleapis.com/kubernetes-release/release/$kubectl_version/bin/darwin/amd64/kubectl >"$HOME/.bin/kubectl" && chmod +x "$HOME/.bin/kubectl"
   print_in_green "${bold}✓ installed!${normal}\n"
 else
   print_success_muted "kubectl"
@@ -31,17 +31,17 @@ fi
 ### helm
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/helm" ] || ! helm version --client --short | grep -q "$helm_version+"; then
   echo_install "Installing helm"
-  curl -L -s https://kubernetes-helm.storage.googleapis.com/helm-$helm_version-darwin-amd64.tar.gz | tar xf - --strip=1 -C "$HOME/.bin" darwin-amd64/helm
+  curl --fail -L -s https://kubernetes-helm.storage.googleapis.com/helm-$helm_version-darwin-amd64.tar.gz | tar xf - --strip=1 -C "$HOME/.bin" darwin-amd64/helm
   print_in_green "${bold}✓ installed!${normal}\n"
 else
   print_success_muted "helm"
 fi
-helm init -c > /dev/null
+helm init -c >/dev/null
 
 ### kops
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/kops" ] || ! kops version | grep -q " $kops_version "; then
   echo_install "Installing kops"
-  curl -L -s https://github.com/kubernetes/kops/releases/download/${kops_version}/kops-darwin-amd64 -o "$HOME/.bin/kops" && chmod +x "$HOME/.bin/kops"
+  curl --fail -L -s https://github.com/kubernetes/kops/releases/download/${kops_version}/kops-darwin-amd64 -o "$HOME/.bin/kops" && chmod +x "$HOME/.bin/kops"
   print_in_green "${bold}✓ installed!${normal}\n"
 else
   print_success_muted "kops"
@@ -50,7 +50,7 @@ fi
 ### argo
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/argo" ] || ! argo version | grep -q "$argo_version"; then
   echo_install "Installing argo"
-  curl -L -s https://github.com/argoproj/argo/releases/download/${argo_version}/argo-darwin-amd64 -o "$HOME/.bin/argo" && chmod +x "$HOME/.bin/argo"
+  curl --fail -L -s https://github.com/argoproj/argo/releases/download/${argo_version}/argo-darwin-amd64 -o "$HOME/.bin/argo" && chmod +x "$HOME/.bin/argo"
   print_in_green "${bold}✓ installed!${normal}\n"
 else
   print_success_muted "argo"
@@ -82,4 +82,3 @@ if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/render" ]; then
 else
   print_success_muted "render"
 fi
-
