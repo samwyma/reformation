@@ -19,15 +19,15 @@ done
 
 echo_install "aliases"
 mkdir -p "$HOME"/.aws/cli
-cp --force "$assets"/aws-alias "$HOME"/.aws/cli/alias
+cp -f "$assets"/aws-alias "$HOME"/.aws/cli/alias
 print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "aws-assume-role script"
 rm -Rf ~/.bin/aws-assume-role
-cp --force "$assets"/aws-assume-role ~/.bin
+cp -f "$assets"/aws-assume-role ~/.bin
 print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "aws-get-session-token script"
 rm -Rf ~/.bin/aws-get-session-token
-cp --force "$assets"/aws-get-session-token ~/.bin
+cp -f "$assets"/aws-get-session-token ~/.bin
 print_in_green "${bold}✓ done!${normal}\n"
