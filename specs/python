@@ -2,10 +2,11 @@
 source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 packages=(
-	black
+	# always have pip first to stop warnings echoing
 	pip
-	credstash
 	pipenv
+	black
+	credstash
 	pylint
 	pywatchman
 	yq
