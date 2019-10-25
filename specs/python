@@ -34,10 +34,16 @@ fi
 command -v pip3 | grep -q .pyenv/shims || print_error "Please add 'eval \"\$(pyenv init -)\"' to your .*rc file"
 eval "$(pyenv init -)"
 
+outdated=$(pip3 list --outdated)
+
 for package in "${packages[@]}"; do
-	echo_install "Upgrading $package"
-	pip3 install --upgrade "$package" --quiet
-	print_in_green "${bold}✓ done!${normal}\n"
+	if grep -q "$package" <<<"$outdated"; then
+		echo_install "Upgrading $package"
+		pip3 install --upgrade "$package" --quiet
+		print_in_green "${bold}✓ done!${normal}\n"
+	else
+		print_success_muted "$package"
+	fi
 done
 
 # This is a hack to get watchman working in python 3
