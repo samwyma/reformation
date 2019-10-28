@@ -4,11 +4,19 @@ assets="$(cd "$(dirname "$0")" && pwd)/../assets"
 
 title "AWS"
 
-echo_install "accounts.json configuration"
+# dependencies
+brew install gopass &>/dev/null
 mkdir -p ~/.landtech
-gopass sync >/dev/null
-gopass "${GOPASS_LANDTECH_STORE}"aws/accounts.json | jq . >~/.landtech/accounts.json
-print_in_green "${bold}✓ done!${normal}\n"
+
+gopass sync &>/dev/null
+
+if json=$(gopass "${GOPASS_LANDTECH_STORE}"aws/accounts.jso1n &>/dev/null); then
+    echo_install "accounts.json configuration"
+    jq . <<<"$json" >~/.landtech/accounts.json
+    print_in_green "${bold}✓ done!${normal}\n"
+else
+    print_error "accounts.json configuration...is your gopass set up? Try running 'gopass show aws/accounts.json'"
+fi
 
 for account in $(jq -r 'keys[]' <~/.landtech/accounts.json); do
     echo_install "aws cli profile: $account"
