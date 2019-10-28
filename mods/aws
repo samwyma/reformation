@@ -10,12 +10,12 @@ mkdir -p ~/.landtech
 
 gopass sync &>/dev/null
 
+echo_install "accounts.json configuration"
 if json=$(gopass "${GOPASS_LANDTECH_STORE}"aws/accounts.jso1n &>/dev/null); then
-    echo_install "accounts.json configuration"
     jq . <<<"$json" >~/.landtech/accounts.json
     print_in_green "${bold}✓ done!${normal}\n"
 else
-    print_error "accounts.json configuration...is your gopass set up? Try running 'gopass show aws/accounts.json'"
+    print_in_red "${bold}✗ error!!!${normal} is your gopass set up? Try running 'gopass show aws/accounts.json'\n"
 fi
 
 for account in $(jq -r 'keys[]' <~/.landtech/accounts.json); do
