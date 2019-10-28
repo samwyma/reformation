@@ -31,7 +31,7 @@ else
 	print_success_muted "python $version (pyenv)"
 fi
 
-command -v pip3 | grep -q .pyenv/shims || print_error "Please add 'eval \"\$(pyenv init -)\"' to your .*rc file"
+grep -q .pyenv/shims <<<"$(command -v pip3)" || print_error "Please add 'eval \"\$(pyenv init -)\"' to your .*rc file"
 eval "$(pyenv init -)"
 
 outdated=$(pip3 list --outdated)

@@ -3,14 +3,17 @@ source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 title "SSH"
 
-echo_install "landtech config"
+# dependencies
+brew install awscli gopass &>/dev/null
 mkdir -p ~/.landtech/ssh
+touch ~/.ssh/config
+
+echo_install "landtech config"
 gopass sync >/dev/null
 user=$(aws iam get-user --profile default | jq -r .User.UserName)
 gopass "${GOPASS_LANDTECH_STORE}"ssh/config | gsed "s/@user@/$user/g" >~/.landtech/ssh/config
 print_in_green "${bold}✓ done!${normal}\n"
 
-touch ~/.ssh/config
 if ! ggrep -q "Include ~/.landtech/ssh/config" ~/.ssh/config; then
     gsed -i '1iInclude ~/.landtech/ssh/config' ~/.ssh/config
 fi
