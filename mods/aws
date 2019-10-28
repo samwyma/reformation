@@ -11,7 +11,7 @@ mkdir -p ~/.landtech
 gopass sync &>/dev/null
 
 echo_install "accounts.json configuration"
-if json=$(gopass "${GOPASS_LANDTECH_STORE}"aws/accounts.jso1n &>/dev/null); then
+if json=$(gopass "${GOPASS_LANDTECH_STORE}"aws/accounts.json &>/dev/null); then
     jq . <<<"$json" >~/.landtech/accounts.json
     print_in_green "${bold}✓ done!${normal}\n"
 else
