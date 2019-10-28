@@ -38,12 +38,12 @@ fi
 fnm use $node_major >/dev/null
 
 for module in "${modules[@]}"; do
-	if ! npm list -g $module >/dev/null; then
+	if ! npm list -g "$module" >/dev/null; then
 		echo_install "Installing $module"
-		npm install $module -g --silent >/dev/null
+		npm install "$module" -g --silent >/dev/null
 		print_in_green "${bold}✓ installed!${normal}\n"
 	else
 		print_success_muted "$module"
-		npm update $module -g --silent >/dev/null
+		npm update "$module" -g --silent >/dev/null
 	fi
 done
