@@ -10,3 +10,5 @@ image-repo =
     !f() {
         echo $(aws account-id).dkr.ecr.$(aws region).amazonaws.com/$1
     }; f
+
+default-vpc = ec2 describe-vpcs --filters "Name=isDefault,Values=true"
