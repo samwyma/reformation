@@ -3,7 +3,7 @@ source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 title "Kubernetes"
 
-kubectl_version="v1.12.10"
+kubectl_version="v1.13.12"
 helm_version="v2.13.1"
 kops_version="1.14.0"
 argo_version="v2.3.0"
