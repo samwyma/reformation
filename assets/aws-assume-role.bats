@@ -17,6 +17,12 @@
     [ "$?" -eq 0 ]
 }
 
+@test "assumes a role; returns the profile in the json" {
+    local account=sandbox
+    local profile=$(aws-assume-role --account $account --role administrator | sed -n -e '/^Profile: /,$p' | sed '1d' | jq -r .Profile)
+    [ "$profile" == "$account" ]
+}
+
 @test "uses the role when only one is available" {
     run aws-assume-role --account sandbox
     [ "$status" -eq 0 ]
