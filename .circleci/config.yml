@@ -17,4 +17,4 @@ workflows:
   commit:
     jobs:
       - test:
-          contexT: AWS_STAGING
+          context: AWS_STAGING
