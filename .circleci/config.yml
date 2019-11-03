@@ -1,0 +1,20 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: docker:stable
+
+jobs:
+  test:
+    executor: default
+    steps:
+      - checkout
+      - run: |
+          bats assets
+
+workflows:
+  commit:
+    jobs:
+      - test:
+          contexT: AWS_STAGING
