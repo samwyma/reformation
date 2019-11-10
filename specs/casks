@@ -37,5 +37,9 @@ for cask in "${casks[@]}"; do
     fi
 done
 
-# start services
-open /Applications/Docker.app
+if ! pgrep Docker.app; then
+    echo_install "Starting docker"
+    open /Applications/Docker.app
+    sleep 25s
+    print_in_green "${bold}✓ started!${normal}\n"
+fi
