@@ -48,4 +48,6 @@ done
 
 # This is a hack to get watchman working in python 3
 # https://github.com/facebook/watchman/issues/631
-gsed -i 's/basestring/str/g' ~/.pyenv/versions/"$version"/bin/watchman-make
+if grep -q .pyenv/shims <<<"$(command -v pip3)"; then
+	gsed -i 's/basestring/str/g' ~/.pyenv/versions/"$version"/bin/watchman-make
+fi
