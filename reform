@@ -5,16 +5,29 @@
 ###############################################################################
 
 cwd="$(cd "$(dirname "$0")" && pwd)" # Get full directory name of this script
+specs=true
+mods=true
 export FORCE=false
 
 for var in "$@"; do
    case "$var" in
+   --specs | -s)
+      specs=true
+      mods=false
+      ;;
+   --mods | -m)
+      specs=false
+      mods=true
+      ;;
    --force | -f)
       FORCE=true
       ;;
    --help | -h)
       echo "Usage:
-      -f, --force    : Force a re-install of all specs and mods"
+      -s, --specs    : Only run the specs (no dependencies)
+      -m, --mods     : Only run the mods (which have dependencies)
+      -f, --force    : Force a re-install of all specs and mods
+      "
       exit 0
       ;;
    esac
@@ -182,16 +195,20 @@ chapter "Prerequisites…"
 install_reformrc
 check_internet_connection
 check_ssh_key
-update_reformation
+#update_reformation
 
 chapter "Dependencies…"
 install_xcode
 install_homebrew
 
-chapter "Installing Specs…"
-install_specs
+if $specs; then
+   chapter "Installing Specs…"
+   install_specs
+fi
 
-chapter "Adding Mods…"
-install_mods
+if $mods; then
+   chapter "Adding Mods…"
+   install_mods
+fi
 
 printf "\n${bold}You have been reformed! Have a nice day.${normal}\n\n"
