@@ -16,6 +16,8 @@ Reform!
 
 ```sh
 ./reform 2>&1 | tee ~/reform.log
+./reform --specs    # Only run the specs
+./reform --mods     # Only run the mods
 ./reform --force    # Force a re-install of any specs and mods
 ./reform --help     # Show the help text
 
