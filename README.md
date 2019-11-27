@@ -16,6 +16,8 @@ Reform!
 
 ```sh
 ./reform 2>&1 | tee ~/reform.log
+./reform --specs    # Only run the specs
+./reform --mods     # Only run the mods
 ./reform --force    # Force a re-install of any specs and mods
 ./reform --help     # Show the help text
 
@@ -32,13 +34,13 @@ Running `./reform` for the first time will add a `~/.reformrc` to your `$HOME` d
 
 `reform` loops over and executes all 'specs' defined in the `./specs` folder.
 
-'Specs' concepts without dependencies, such as installing packages, frameworks, libraries etc...
+'Specs' concepts **without** dependencies, such as installing packages, frameworks, libraries etc...
 
 ## Mods
 
 `reform` loops over and executes all 'mods' defined in the `./mods` folder.
 
-'Mods' are concepts (that may require dependencies) used for modifying your system. Ie aliases, configs, users etc...
+'Mods' are concepts (that may require dependencies, in our case `gopass` and `awscli`) used for modifying your system. Ie aliases, configs, users etc...
 
 ## Known Issues
 
