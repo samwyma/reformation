@@ -2,8 +2,6 @@
 source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 packages=(
-	# always have pip first to stop warnings echoing
-	pip
 	pipenv
 	black
 	credstash
@@ -25,11 +23,15 @@ fi
 if [ "$FORCE" = true ] || ! pyenv versions | grep -q "$version"; then
 	echo_install "Installing python v$version"
 	pyenv install "$version" &>/dev/null
-	pyenv global "$version" &>/dev/null
 	print_in_green "${bold}✓ installed!${normal}\n"
 else
 	print_success_muted "python $version (pyenv)"
 fi
+
+# Set the global version
+pyenv global "$version" &>/dev/null
+# Upgrade pip to the latest version
+pip3 install --upgrade pip >/dev/null
 
 grep -q .pyenv/shims <<<"$(command -v pip3)" || print_error "Please add 'eval \"\$(pyenv init -)\"' to your .*rc file"
 eval "$(pyenv init -)"
@@ -40,8 +42,8 @@ for package in "${packages[@]}"; do
 	if grep -q "$package" <<<"$uptodate"; then
 		print_success_muted "$package"
 	else
-	    echo_install "Upgrading $package"
-	    pip3 install --upgrade "$package" --quiet
+		echo_install "Upgrading $package"
+		pip3 install --upgrade "$package" --quiet
 		print_in_green "${bold}✓ done!${normal}\n"
 	fi
 done
