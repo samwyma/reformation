@@ -9,6 +9,9 @@ source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 # !/usr/bin/env bash
 # https://itnext.io/upgrading-bash-on-macos-7138bd1066ba
 
+# TEMPORARY - remove once no one is on the old bats
+brew uninstall bats || true
+
 brews=(
     awscli
     # kubernetes
@@ -18,7 +21,7 @@ brews=(
     gopass
     gnupg
     # bash testing
-    bats
+    bats-core
     expect
     # general
     bash # latest bash (see above)
