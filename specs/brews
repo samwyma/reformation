@@ -23,10 +23,12 @@ brews=(
     # bash testing
     bats-core
     expect
+    # source control
+    git
+    git-secrets
     # general
     bash # latest bash (see above)
-    git
-    grep # full grep (osx has a reduced-feature version)
+    grep # full grep (osx has a reduced-feature-set version)
     jq
     shellcheck
     wget
