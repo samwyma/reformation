@@ -1,3 +1,5 @@
+[ -f $HOME/.reformrc.config ] && source $HOME/.reformrc.config
+
 export REFORMRC=1
 export REFORMATION_DIR="~ref_path~"
 
@@ -8,3 +10,5 @@ export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH:$PATH"
 export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH:$PATH"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+
+[ -z "$WELCOME_MESSAGE" ] || echo -e "$WELCOME_MESSAGE"

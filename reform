@@ -99,6 +99,7 @@ update_reformation() {
 
 install_reformrc() {
    template_file=".reformrc.template"
+   config_file=".reformrc.config"
 
    if [ "$REFORMRC" != "1" ]; then
       REFORMATION_DIR=$(pwd)
@@ -115,10 +116,21 @@ install_reformrc() {
       print_error "Please add 'source \$HOME/.reformrc' to your shell profile."
    fi
 
+   if [ -f "$HOME/$config_file" ]; then
+      source "$HOME/$config_file" > /dev/null
+   fi
+
+   if [ "$RESYNC_CONFIG" == "true" ] || [ ! -f "$HOME/$config_file" ]; then
+      cp "$REFORMATION_DIR/$config_file" "$HOME/$config_file"
+      print_success ".reformrc.config copied to \$HOME directory."
+   else
+      print_success_muted "Not resyncing .reformrc.config"
+   fi
+
    ref_template="$REFORMATION_DIR/$template_file"
 
    cat $ref_template | sed "s|~ref_path~|${REFORMATION_DIR}|g" >"$HOME/.reformrc"
-   source "$HOME/.reformrc"
+   source "$HOME/.reformrc" > /dev/null
    print_success ".reformrc copied to \$HOME directory."
 }
 
