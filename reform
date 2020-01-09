@@ -87,7 +87,7 @@ update_reformation() {
       printf "\n\n"
       git stash >/dev/null
       git pull --rebase --stat origin master
-      git stash pop >/dev/null
+      git stash pop >/dev/null || true
       print_warning "Updated! Please re-run 'reform'"
       exit 0
    else
