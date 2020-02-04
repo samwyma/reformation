@@ -86,9 +86,11 @@ update_reformation() {
    if [[ $(git rev-parse HEAD) != $(git rev-parse @{u}) ]]; then
       printf "\n\n"
       git stash >/dev/null
-      git pull --rebase --stat origin master
+      git pull --rebase --stat origin master >/dev/null
       git stash pop >/dev/null || true
+      print_warning "###############################"
       print_warning "Updated! Please re-run 'reform'"
+      print_warning "###############################"
       exit 0
    else
       print_in_green "${bold}✓ on latest\n"
@@ -117,7 +119,7 @@ install_reformrc() {
    fi
 
    if [ -f "$HOME/$config_file" ]; then
-      source "$HOME/$config_file" > /dev/null
+      source "$HOME/$config_file" >/dev/null
    fi
 
    if [ "$RESYNC_CONFIG" == "true" ] || [ ! -f "$HOME/$config_file" ]; then
@@ -130,7 +132,7 @@ install_reformrc() {
    ref_template="$REFORMATION_DIR/$template_file"
 
    cat $ref_template | sed "s|~ref_path~|${REFORMATION_DIR}|g" >"$HOME/.reformrc"
-   source "$HOME/.reformrc" > /dev/null
+   source "$HOME/.reformrc" >/dev/null
    print_success ".reformrc copied to \$HOME directory."
 }
 
