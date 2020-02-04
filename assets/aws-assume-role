@@ -105,7 +105,7 @@ set_account
 set_role
 set_duration
 
-if $(requires_mfa) == "true"; then
+if [[ "$(requires_mfa)" == "true" ]]; then
   get_session_token
 fi
 
