@@ -17,6 +17,7 @@ print_in_green "${bold}✓ done!${normal}\n"
 echo_install "aws cli profile: default"
 aws configure set profile.default.region eu-west-1
 aws configure set profile.default.output json
+print_in_green "${bold}✓ done!${normal}\n"
 
 for account in $(jq -r 'keys[]' <~/.landtech/accounts.json); do
     echo_install "aws cli profiles: $account"
