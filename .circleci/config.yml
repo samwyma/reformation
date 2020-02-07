@@ -1,0 +1,25 @@
+version: 2.1
+
+executors:
+  ci:
+    docker:
+      - image: landtech/ci-base
+
+jobs:
+  test:
+    executor: ci
+    steps:
+      - checkout
+      - run:
+          command: |
+            aws configure set profile.default.aws_access_key_id "$AWS_ACCESS_KEY_ID"
+            aws configure set profile.default.aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
+            export AWS_PROFILE=default
+
+            bats assets
+
+workflows:
+  schedule:
+    jobs:
+      - test:
+          context: AWS_STAGING
