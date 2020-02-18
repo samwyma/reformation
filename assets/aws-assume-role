@@ -4,10 +4,23 @@ set -euo pipefail
 
 ### VARIABLES
 
-if [ -p /dev/stdin ]; then
-  config="$(</dev/stdin)"
+config_file="$HOME/.landtech/accounts.json"
+
+# load from stdin first, and if empty load from config file
+if [ ! -t 0 ]; then
+  config="$(cat)"
 else
-  config=$(cat ~/.landtech/accounts.json)
+  config="$(cat "$config_file")"
+fi
+
+if [ -z "$config" ]; then
+  echo "Error - the config $config_file is empty"
+  exit 2
+fi
+
+if [ ! "$(jq -e . <<<"$config")" ]; then
+  echo "Error - the config $config_file is not valid json"
+  exit 3
 fi
 
 profile="${AWS_PROFILE:=default}"
