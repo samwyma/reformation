@@ -18,7 +18,7 @@ config="$HOME/.landtech/accounts.json"
 gopass "${GOPASS_LANDTECH_STORE}"aws/accounts.json | jq . >$config
 if [ ! -s "$config" ]; then
     print_in_red "${bold}✗ error!!!${normal}\n"
-    print_warning "$config is empty, check your gopass works: gopass ${GOPASS_LANDTECH_STORE}aws/accounts.json"
+    print_error "$config is empty, check the output of: gopass ${GOPASS_LANDTECH_STORE}aws/accounts.json"
 else
     print_in_green "${bold}✓ done!${normal}\n"
 fi
