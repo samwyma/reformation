@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 assets="$(cd "$(dirname "$0")" && pwd)/../assets"
 
@@ -8,11 +9,19 @@ title "AWS"
 brew install gopass &>/dev/null
 mkdir -p ~/.landtech
 
-gopass sync &>/dev/null
+echo_install "syncing gopass"
+gopass sync >/dev/null
+print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "accounts.json configuration"
-gopass "${GOPASS_LANDTECH_STORE}"aws/accounts.json | jq . >~/.landtech/accounts.json
-print_in_green "${bold}✓ done!${normal}\n"
+config="$HOME/.landtech/accounts.json"
+gopass "${GOPASS_LANDTECH_STORE}"aws/accounts.json | jq . >$config
+if [ ! -s "$config" ]; then
+    print_in_red "${bold}✗ error!!!${normal}\n"
+    print_warning "$config is empty, check your gopass works: gopass ${GOPASS_LANDTECH_STORE}aws/accounts.json"
+else
+    print_in_green "${bold}✓ done!${normal}\n"
+fi
 
 echo_install "aws cli profile: default"
 aws configure set profile.default.region eu-west-1

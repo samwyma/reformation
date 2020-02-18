@@ -8,11 +8,20 @@ brew install awscli gopass &>/dev/null
 mkdir -p ~/.landtech/ssh
 touch ~/.ssh/config
 
-echo_install "landtech config"
+echo_install "syncing gopass"
 gopass sync >/dev/null
-user=$(aws iam get-user --profile default | jq -r .User.UserName)
-gopass "${GOPASS_LANDTECH_STORE}"ssh/config | gsed "s/@user@/$user/g" >~/.landtech/ssh/config
 print_in_green "${bold}✓ done!${normal}\n"
+
+echo_install "landtech config"
+config="$HOME/.landtech/ssh/config"
+user=$(aws iam get-user --profile default | jq -r .User.UserName)
+gopass "${GOPASS_LANDTECH_STORE}"ssh/config | gsed "s/@user@/$user/g" >"$config"
+if [ ! -s "$config" ]; then
+    print_in_red "${bold}✗ error!!!${normal}\n"
+    print_warning "$config is empty, check your gopass works: gopass ${GOPASS_LANDTECH_STORE}ssh/config"
+else
+    print_in_green "${bold}✓ done!${normal}\n"
+fi
 
 if ! ggrep -q "Include ~/.landtech/ssh/config" ~/.ssh/config; then
     gsed -i '1iInclude ~/.landtech/ssh/config' ~/.ssh/config
