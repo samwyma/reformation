@@ -3,7 +3,6 @@ source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 packages=(
 	pipenv
-	black
 	credstash
 	pylint
 	pywatchman
