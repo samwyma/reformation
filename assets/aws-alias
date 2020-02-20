@@ -12,3 +12,5 @@ image-repo =
     }; f
 
 default-vpc = ec2 describe-vpcs --filters "Name=isDefault,Values=true"
+
+admins = iam get-group --group-name administrators
