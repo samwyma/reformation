@@ -12,12 +12,12 @@ jobs:
       - checkout
       - run:
           command: |
-            aws configure set profile.sandbox.aws_access_key_id "$AWS_ACCESS_KEY_ID"
-            aws configure set profile.sandbox.aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
+            aws configure set profile.default.aws_access_key_id "$AWS_ACCESS_KEY_ID"
+            aws configure set profile.default.aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
 
             # test dependencies
-            mkdir -p .landtech
-            credstash get aws/accounts.json > .landtech/accounts.json
+            mkdir -p $HOME/.landtech
+            credstash get aws/accounts.json > $HOME/.landtech/accounts.json
 
             make test
 
