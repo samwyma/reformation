@@ -1,4 +1,5 @@
 [ -f $HOME/.reformrc.config ] && source $HOME/.reformrc.config
+[ -f $HOME/.landtech/aliases ] && source $HOME/.landtech/aliases
 
 export REFORMRC=1
 export REFORMATION_DIR="~ref_path~"
@@ -12,3 +13,4 @@ export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH:$PATH"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
 [ -z "$WELCOME_MESSAGE" ] || echo -e "$WELCOME_MESSAGE"
+

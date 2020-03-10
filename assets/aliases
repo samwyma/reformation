@@ -1,0 +1,4 @@
+
+# kubectl
+alias k8-cluster-name='kubectl config view -o json | jq -r ".contexts[] | select(.name == \"$(kubectl config current-context)\") | .context.cluster"'
+alias k8-cluster-domain='${$(k8-cluster-name)#*.}'
