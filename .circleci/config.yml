@@ -14,8 +14,10 @@ jobs:
           command: |
             aws configure set profile.default.aws_access_key_id "$AWS_ACCESS_KEY_ID"
             aws configure set profile.default.aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
+            aws configure set profile.default.region "eu-west-1"
 
-            # test dependencies
+            # set up dependencies
+            aws configure set profile.sandbox.region "eu-west-1"
             mkdir -p $HOME/.landtech
             credstash get aws/accounts.json > $HOME/.landtech/accounts.json
 
