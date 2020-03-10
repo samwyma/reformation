@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
+assets="$(cd "$(dirname "$0")" && pwd)/../assets"
 
 title "Shell"
+
+echo_install "aliases"
+cp -f "$assets"/aliases "$HOME"/.landtech/alias
+print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "assert.sh"
 if curl --fail --retry 3 --retry-delay 1 -s -o /usr/local/bin/assert.sh https://raw.github.com/lehmannro/assert.sh/v1.1/assert.sh; then
