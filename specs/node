@@ -22,7 +22,7 @@ if [ ! "$FORCE" = true ] && command -v fnm &>/dev/null; then
 else
 	echo_install "Installing FNM…"
 	brew install Schniz/tap/fnm &>/dev/null
-	print_in_green "${bold}✓ upgraded!${normal}\n"
+	print_in_green "${bold}✓ installed!${normal}\n"
 fi
 
 eval "$(fnm env)"

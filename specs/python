@@ -11,13 +11,22 @@ packages=(
 )
 
 title "Python"
-version=$(pyenv install --list | grep "^\s*[0-9]\.[0-9]\.[0-9]$" | tail -1 | xargs)
 
-if [ "$FORCE" = true ] || ! brew list pyenv &>/dev/null; then
-	step "Installing pyenv"
-	brew install pyenv >/dev/null
+if [ ! "$FORCE" = true ] && command -v pyenv &>/dev/null; then
+	if brew outdated pyenv | grep -q pyenv; then
+		echo_install "Upgrading pyenv…"
+		brew upgrade pyenv &>/dev/null
+		print_in_green "${bold}✓ upgraded!${normal}\n"
+	else
+		print_success_muted "pyenv"
+	fi
+else
+	echo_install "Installing pyenv…"
+	brew install pyenv &>/dev/null
 	print_in_green "${bold}✓ installed!${normal}\n"
 fi
+
+version=$(pyenv install --list | grep "^\s*[0-9]\.[0-9]\.[0-9]$" | tail -1 | xargs)
 
 if [ "$FORCE" = true ] || ! pyenv versions | grep -q "$version"; then
 	echo_install "Installing python v$version"
