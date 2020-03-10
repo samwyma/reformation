@@ -6,6 +6,7 @@ title "Shell"
 
 echo_install "aliases"
 cp -f "$assets"/aliases "$HOME"/.landtech/alias
+source "$HOME"/.landtech/alias
 print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "assert.sh"
