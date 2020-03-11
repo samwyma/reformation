@@ -5,8 +5,9 @@ assets="$(cd "$(dirname "$0")" && pwd)/../assets"
 title "Shell"
 
 echo_install "aliases"
-cp -f "$assets"/aliases "$HOME"/.landtech/aliases
-source "$HOME"/.landtech/aliases
+mkdir -p "$HOME"/.landtech
+rm -Rf "$HOME"/.landtech/aliases
+cp -fr "$assets"/aliases "$HOME"/.landtech/aliases
 print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "assert.sh"

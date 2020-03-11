@@ -1,5 +1,8 @@
 [ -f $HOME/.reformrc.config ] && source $HOME/.reformrc.config
-[ -f $HOME/.landtech/aliases ] && source $HOME/.landtech/aliases
+
+if [ -d "$HOME/.landtech/aliases" ]; then
+    for file in $HOME/.landtech/aliases/*.sh; do source $file; done
+fi
 
 export REFORMRC=1
 export REFORMATION_DIR="~ref_path~"
