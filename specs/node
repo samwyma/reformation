@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
-node_major="8"
+node_major="12"
 node_ver="latest-v$node_major.x"
 
 modules=(
