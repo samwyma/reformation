@@ -7,8 +7,6 @@ casks=(
     google-chrome
     gpg-suite
     iterm2
-    postman
-    robo-3t
     slack
     visual-studio-code
 )
@@ -42,4 +40,10 @@ if ! pgrep Docker >/dev/null; then
     open /Applications/Docker.app
     sleep 25s
     print_in_green "${bold}✓ started!${normal}\n"
+fi
+
+# casks outside of the reformation specified ones
+other_casks=$(brew cask outdated | wc -l)
+if [ "$other_casks" -gt 0 ]; then
+    print_warning "$other_casks other casks are outdated. Run 'brew cask upgrade' to upgrade them."
 fi
