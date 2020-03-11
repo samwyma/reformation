@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+kubectl config view -o json | jq -r ".contexts[] | select(.name == \"$(kubectl config current-context)\") | .context.cluster"

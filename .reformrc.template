@@ -1,14 +1,11 @@
 [ -f $HOME/.reformrc.config ] && source $HOME/.reformrc.config
 
-if [ -d "$HOME/.landtech/aliases" ]; then
-    for file in $HOME/.landtech/aliases/*.sh; do source $file; done
-fi
-
 export REFORMRC=1
 export REFORMATION_DIR="~ref_path~"
 
 export PATH="$REFORMATION_DIR:$PATH"
 export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/.landtech/aliases:$PATH"
 export PATH="$PATH:./node_modules/.bin"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH:$PATH"
