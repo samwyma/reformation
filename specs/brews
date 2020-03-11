@@ -20,12 +20,13 @@ brews=(
     # kubernetes
     aws-iam-authenticator
     jsonnet
+    # python
+    pyenv
     # password store
     gopass
     gnupg
     # bash testing
     bats-core
-    expect
     # general
     bash # latest bash (see above)
     git
@@ -44,7 +45,6 @@ title "Homebrew"
 echo_install "Updating"
 brew update >/dev/null
 print_in_green "${bold}✓ done!${normal}\n"
-
 echo_install "Cleaning"
 brew cleanup &>/dev/null
 print_in_green "${bold}✓ done!${normal}\n"
@@ -74,6 +74,12 @@ for brew in "${brews[@]}"; do
         fi
     fi
 done
+
+# brews outside of the reformation specified ones
+other_brews=$(brew outdated | wc -l)
+if [ "$other_brews" -gt 0 ]; then
+    print_warning "$other_brews other brews are outdated. Run 'brew upgrade' to upgrade them."
+fi
 
 if [[ ! ":$PATH:" == *":/usr/local/opt/grep/libexec/gnubin:"* ]]; then
     print_error "\$PATH entry missing for 'grep'"
