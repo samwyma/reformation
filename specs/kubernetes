@@ -45,7 +45,7 @@ fi
 helm init -c >/dev/null
 
 ### kops
-if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/kops" ] || ! kops version | grep -q " $kops_version "; then
+if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/kops" ] || [[ "v$(kops version --short)" != "$kops_version" ]]; then
   echo_install "Installing kops $kops_version"
   if curl --fail --retry 3 --retry-delay 1 -L -s https://github.com/kubernetes/kops/releases/download/${kops_version}/kops-darwin-amd64 -o "$HOME/.bin/kops" && chmod +x "$HOME/.bin/kops"; then
     print_in_green "${bold}✓ installed!${normal}\n"
