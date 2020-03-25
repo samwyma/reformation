@@ -35,12 +35,14 @@ for cask in "${casks[@]}"; do
     fi
 done
 
+# docker
 if ! pgrep Docker >/dev/null; then
     echo_install "Starting docker"
     open /Applications/Docker.app
     sleep 25s
     print_in_green "${bold}✓ started!${normal}\n"
 fi
+docker container prune && docker image prune
 
 # casks outside of the reformation specified ones
 other_casks=$(brew cask outdated | wc -l)
