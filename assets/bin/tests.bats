@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-aliases=assets/aliases
+aliases=assets/bin
 
 @test "k8-cluster-domain returns the domain of the cluster" {
     k8_cluster_name() {

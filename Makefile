@@ -31,4 +31,4 @@ test-aws-assume-role:
 
 ## test aliases
 test-aliases:
-	bats assets/aliases
+	bats assets/bin
