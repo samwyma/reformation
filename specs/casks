@@ -42,7 +42,10 @@ if ! pgrep Docker >/dev/null; then
     sleep 25s
     print_in_green "${bold}✓ started!${normal}\n"
 fi
-docker container prune && docker image prune
+
+echo_install "Cleaning docker"
+docker system prune -f >/dev/null
+print_in_green "${bold}✓ started!${normal}\n"
 
 # casks outside of the reformation specified ones
 other_casks=$(brew cask outdated | wc -l)
