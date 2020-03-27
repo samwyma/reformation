@@ -4,10 +4,16 @@ assets="$(cd "$(dirname "$0")" && pwd)/../assets"
 
 title "Shell"
 
-echo_install "aliases"
 mkdir -p "$HOME"/.landtech
+
+echo_install "bins"
 rm -Rf "$HOME"/.landtech/aliases
-cp -fr "$assets"/aliases "$HOME"/.landtech/aliases
+rm -Rf "$HOME"/.landtech/bin
+cp -fr "$assets"/bin "$HOME"/.landtech/bin
+print_in_green "${bold}✓ done!${normal}\n"
+
+echo_install "aliases"
+gopass "${GOPASS_LANDTECH_STORE}"shell/aliases >"$HOME"/.landtech/aliases
 print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "assert.sh"

@@ -1,11 +1,12 @@
 [ -f $HOME/.reformrc.config ] && source $HOME/.reformrc.config
+[ -f $HOME/.landtech/aliases ] && source $HOME/.landtech/aliases
 
 export REFORMRC=1
 export REFORMATION_DIR="~ref_path~"
 
 export PATH="$REFORMATION_DIR:$PATH"
 export PATH="$HOME/.bin:$PATH"
-export PATH="$HOME/.landtech/aliases:$PATH"
+export PATH="$HOME/.landtech/bin:$PATH"
 export PATH="$PATH:./node_modules/.bin"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH:$PATH"

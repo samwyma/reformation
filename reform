@@ -211,7 +211,7 @@ chapter "Prerequisites…"
 install_reformrc
 check_internet_connection
 check_ssh_key
-update_reformation
+#update_reformation
 
 chapter "Dependencies…"
 install_xcode
