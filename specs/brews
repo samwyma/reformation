@@ -29,15 +29,16 @@ brews=(
     bats-core
     # general
     bash # latest bash (see above)
+    coreutils
     git
+    gnu-sed
+    github/gh/gh
     grep # full grep (osx has a reduced-feature version)
     jq
+    moreutils
     shellcheck
     wget
     watchman
-    coreutils
-    gnu-sed
-    github/gh/gh
 )
 
 title "Homebrew"
