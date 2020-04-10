@@ -20,6 +20,8 @@ brews=(
     # kubernetes
     aws-iam-authenticator
     jsonnet
+    # docker
+    docker-compose
     # python
     pyenv
     # password store
@@ -39,6 +41,7 @@ brews=(
     shellcheck
     wget
     watchman
+    yq
 )
 
 title "Homebrew"

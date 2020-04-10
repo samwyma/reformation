@@ -6,8 +6,6 @@ packages=(
 	credstash
 	pylint
 	pywatchman
-	yq
-	docker-compose
 )
 
 title "Python"
@@ -55,6 +53,14 @@ for package in "${packages[@]}"; do
 		print_in_green "${bold}✓ done!${normal}\n"
 	fi
 done
+
+# remove python yq (as we're using the brew version)
+rm -f ~/.pyenv/versions/*/bin/yq
+rm -f "$HOME"/.pyenv/shims/yq &>/dev/null
+
+# remove python yq (as we're using the brew version)
+rm -f ~/.pyenv/versions/*/bin/docker-compose
+rm -f "$HOME"/.pyenv/shims/docker-compose &>/dev/null
 
 # This is a hack to get watchman working in python 3
 # https://github.com/facebook/watchman/issues/631
