@@ -41,7 +41,7 @@ brews=(
     shellcheck
     wget
     watchman
-    yq
+    python-yq
 )
 
 title "Homebrew"
