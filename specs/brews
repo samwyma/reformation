@@ -29,6 +29,8 @@ brews=(
     gnupg
     # bash testing
     bats-core
+    # static analysis
+    aquasecurity/trivy/trivy
     # general
     bash # latest bash (see above)
     coreutils
