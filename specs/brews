@@ -24,6 +24,8 @@ brews=(
     docker-compose
     # python
     pyenv
+    # node
+    yarn
     # password store
     gopass
     gnupg
