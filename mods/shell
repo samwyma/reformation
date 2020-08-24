@@ -13,7 +13,7 @@ cp -fr "$assets"/bin "$HOME"/.landtech/bin
 print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "aliases"
-gopass "${GOPASS_LANDTECH_STORE}"shell/aliases >"$HOME"/.landtech/aliases
+gopass show "${GOPASS_LANDTECH_STORE}"shell/aliases >"$HOME"/.landtech/aliases
 print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "assert.sh"

@@ -15,7 +15,7 @@ print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "accounts.json configuration"
 config="$HOME/.landtech/accounts.json"
-gopass "${GOPASS_LANDTECH_STORE}"aws/accounts.json | jq . >$config
+gopass show "${GOPASS_LANDTECH_STORE}"aws/accounts.json | jq . >$config
 if [ ! -s "$config" ]; then
     print_in_red "${bold}✗ error!!!${normal}\n"
     print_error "$config is empty, check the output of: gopass ${GOPASS_LANDTECH_STORE}aws/accounts.json"
