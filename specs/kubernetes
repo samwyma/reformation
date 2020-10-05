@@ -8,6 +8,7 @@ kubectl_version=$(jq -r .kubectl <<<"$versions")
 helm_version=$(jq -r .helm <<<"$versions")
 kops_version=$(jq -r .kops <<<"$versions")
 argo_version=$(jq -r .argo <<<"$versions")
+tilt_version=$(jq -r .tilt <<<"$versions")
 
 if ! [ -x "$(command -v docker)" ]; then
   print_error "Docker is required, it should be included in the 'specs'"
@@ -68,6 +69,19 @@ else
   print_success_muted "argo"
 fi
 
+### tilt
+if [ "$FORCE" = true ] || [ ! command -v tilt >/dev/null 2>&1 ] || ! tilt version | grep -q "$tilt_version"; then
+  echo_install "Installing tilt $tilt_version"
+  if curl --fail --retry 3 --retry-delay 1 -L -s https://raw.githubusercontent.com/tilt-dev/tilt/${tilt_version}/scripts/install.sh | bash; then
+    print_in_green "${bold}✓ installed!${normal}\n"
+  else
+    print_in_red "${bold}✗ error!!!${normal}\n"
+  fi
+else
+  print_success_muted "tilt"
+fi
+
+### promtool
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/promtool" ]; then
   echo_install "Installing promtool"
   docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
