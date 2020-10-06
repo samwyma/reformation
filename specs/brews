@@ -36,7 +36,7 @@ brews=(
     coreutils
     git
     gnu-sed
-    github/gh/gh
+    gh
     grep # full grep (osx has a reduced-feature version)
     jq
     moreutils
