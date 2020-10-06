@@ -9,12 +9,6 @@ source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 # !/usr/bin/env bash
 # https://itnext.io/upgrading-bash-on-macos-7138bd1066ba
 
-# TEMPORARY - remove once no one is on the old bats
-brew uninstall bats &>/dev/null || true
-
-# TEMPORARY - remove once no one is on the old hub
-brew uninstall hub &>/dev/null || true
-
 brews=(
     awscli
     # kubernetes
