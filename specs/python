@@ -54,14 +54,6 @@ for package in "${packages[@]}"; do
 	fi
 done
 
-# remove python yq (as we're using the brew version)
-rm -f ~/.pyenv/versions/*/bin/yq
-rm -f "$HOME"/.pyenv/shims/yq &>/dev/null
-
-# remove python yq (as we're using the brew version)
-rm -f ~/.pyenv/versions/*/bin/docker-compose
-rm -f "$HOME"/.pyenv/shims/docker-compose &>/dev/null
-
 # This is a hack to get watchman working in python 3
 # https://github.com/facebook/watchman/issues/631
 if grep -q .pyenv/shims <<<"$(command -v pip3)"; then
