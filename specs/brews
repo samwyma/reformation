@@ -57,17 +57,17 @@ outdated=$(brew outdated)
 for brew in "${brews[@]}"; do
     if ! echo "$installed" | grep -q "$brew"; then
         echo_install "Installing $brew"
-        brew install "$brew" >/dev/null
+        brew install --quiet "$brew" >/dev/null
         brew link --overwrite "$brew" &>/dev/null
         print_in_green "${bold}✓ installed!${normal}\n"
     else
         if [ "$FORCE" = true ]; then
             echo_install "Reinstalling $brew"
-            brew reinstall "$brew" >/dev/null
+            brew reinstall --quiet "$brew" >/dev/null
             print_in_green "${bold}✓ installed!${normal}\n"
         elif echo "$outdated" | grep -q "$brew"; then
             echo_install "Upgrading $brew"
-            brew upgrade "$brew" >/dev/null
+            brew upgrade --quiet "$brew" >/dev/null
             print_in_green "${bold}✓ upgraded!${normal}\n"
         else
             print_success_muted "$brew"
