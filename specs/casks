@@ -50,5 +50,5 @@ print_in_green "${bold}✓ started!${normal}\n"
 # casks outside of the reformation specified ones
 other_casks=$(brew outdated --cask | wc -l)
 if [ "$other_casks" -gt 0 ]; then
-    print_warning "$other_casks other casks are outdated. Run 'brew cask upgrade' to upgrade them."
+    print_warning "$other_casks other casks are outdated. Run 'brew upgrade --cask' to upgrade them."
 fi
