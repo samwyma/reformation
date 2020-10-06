@@ -70,9 +70,9 @@ else
 fi
 
 ### tilt
-if [ "$FORCE" = true ] || [ ! command -v tilt >/dev/null 2>&1 ] || ! tilt version | grep -q "$tilt_version"; then
+if [ "$FORCE" = true ] || [ ! command -v tilt ] >/dev/null 2>&1 || ! tilt version | grep -q "$tilt_version"; then
   echo_install "Installing tilt $tilt_version"
-  if curl --fail --retry 3 --retry-delay 1 -L -s https://raw.githubusercontent.com/tilt-dev/tilt/${tilt_version}/scripts/install.sh | bash; then
+  if curl --fail --retry 3 --retry-delay 1 -L -s https://raw.githubusercontent.com/tilt-dev/tilt/${tilt_version}/scripts/install.sh | bash >/dev/null 2>&1; then
     print_in_green "${bold}✓ installed!${normal}\n"
   else
     print_in_red "${bold}✗ error!!!${normal}\n"
