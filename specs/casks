@@ -45,7 +45,7 @@ fi
 
 echo_install "Cleaning docker"
 docker system prune -f >/dev/null
-print_in_green "${bold}✓ started!${normal}\n"
+print_in_green "${bold}✓ done!${normal}\n"
 
 # casks outside of the reformation specified ones
 other_casks=$(brew outdated --cask | wc -l)
