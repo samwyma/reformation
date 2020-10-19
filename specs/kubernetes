@@ -35,7 +35,7 @@ fi
 ### helm
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/helm" ] || ! helm version --client --short | grep -q "$helm_version+"; then
   echo_install "Installing helm $helm_version"
-  if curl --fail --retry 3 --retry-delay 1 -L -s https://kubernetes-helm.storage.googleapis.com/helm-$helm_version-darwin-amd64.tar.gz | tar xf - --strip=1 -C "$HOME/.bin" darwin-amd64/helm; then
+  if curl --fail --retry 3 --retry-delay 1 -L -s https://get.helm.sh/helm-$helm_version-darwin-amd64.tar.gz | tar xf - --strip=1 -C "$HOME/.bin" darwin-amd64/helm; then
     print_in_green "${bold}✓ installed!${normal}\n"
   else
     print_in_red "${bold}✗ error!!!${normal}\n"
@@ -43,7 +43,6 @@ if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/helm" ] || ! helm version --client 
 else
   print_success_muted "helm"
 fi
-helm init -c >/dev/null
 
 ### kops
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/kops" ] || [[ "v$(kops version --short)" != "$kops_version" ]]; then
