@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
+assets="$(cd "$(dirname "$0")" && pwd)/../assets"
+
+title "Helm Mods"
+
+echo_install "Stable repo"
+helm repo add stable "https://kubernetes-charts.storage.googleapis.com/" > /dev/null
+print_in_green "${bold}✓ done!${normal}\n"
+
+echo_install "Bitnami repo"
+helm repo add bitnami "https://charts.bitnami.com/bitnami" > /dev/null
+print_in_green "${bold}✓ done!${normal}\n"
+
+echo_install "Update repos"
+helm repo update > /dev/null
+print_in_green "${bold}✓ done!${normal}\n"
