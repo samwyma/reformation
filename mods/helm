@@ -5,7 +5,7 @@ assets="$(cd "$(dirname "$0")" && pwd)/../assets"
 title "Helm Mods"
 
 echo_install "Stable repo"
-helm repo add stable "https://kubernetes-charts.storage.googleapis.com/" > /dev/null
+helm repo add stable "https://charts.helm.sh/stable" --force-update > /dev/null
 print_in_green "${bold}✓ done!${normal}\n"
 
 echo_install "Bitnami repo"
