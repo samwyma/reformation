@@ -3,12 +3,11 @@ source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 title "Kubernetes"
 
-versions=$(curl --fail --retry 3 --retry-delay 1 -L -s https://raw.githubusercontent.com/landtechnologies/docker-ci-images/master/version.json)
-kubectl_version=$(jq -r .kubectl <<<"$versions")
-helm_version=$(jq -r .helm <<<"$versions")
-kops_version=$(jq -r .kops <<<"$versions")
-argo_version=$(jq -r .argo <<<"$versions")
-tilt_version=$(jq -r .tilt <<<"$versions")
+kubectl_version="v1.18.10"
+helm_version="v1.18.2"
+kops_version="v3.4.0"
+argo_version="v2.11.3"
+tilt_version="v0.17.6"
 
 if ! [ -x "$(command -v docker)" ]; then
   print_error "Docker is required, it should be included in the 'specs'"
