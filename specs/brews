@@ -38,6 +38,7 @@ brews=(
     wget
     watchman
     python-yq
+    kind
 )
 
 title "Homebrew"
