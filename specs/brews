@@ -39,6 +39,7 @@ brews=(
     watchman
     python-yq
     kind
+    tilt-dev/tap/ctlptl
 )
 
 title "Homebrew"

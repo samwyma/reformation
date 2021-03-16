@@ -3,11 +3,13 @@ source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
 title "Kubernetes"
 
-kubectl_version="v1.18.10"
-helm_version="v1.18.2"
-kops_version="v3.4.0"
-argo_version="v2.11.3"
-tilt_version="v0.17.6"
+versions=$(curl --fail --retry 3 --retry-delay 1 -L -s https://raw.githubusercontent.com/samwyma/docker-ci-images/master/version.json)
+kubectl_version=$(jq -r .kubectl <<<"$versions")
+helm_version=$(jq -r .helm <<<"$versions")
+kops_version=$(jq -r .kops <<<"$versions")
+argo_version=$(jq -r .argo <<<"$versions")
+argocd_version=$(jq -r .argocd <<<"$versions")
+tilt_version=$(jq -r .tilt <<<"$versions")
 
 if ! [ -x "$(command -v docker)" ]; then
   print_error "Docker is required, it should be included in the 'specs'"
@@ -58,13 +60,25 @@ fi
 ### argo
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/argo" ] || ! argo version | grep -q "$argo_version"; then
   echo_install "Installing argo $argo_version"
-  if curl --fail --retry 3 --retry-delay 1 -L -s https://github.com/argoproj/argo/releases/download/${argo_version}/argo-darwin-amd64 -o "$HOME/.bin/argo" && chmod +x "$HOME/.bin/argo"; then
+  if curl --fail --retry 3 --retry-delay 1 -L -s https://github.com/argoproj/argo/releases/download/${argo_version}/argo-darwin-amd64.gz | gunzip > "$HOME/.bin/argo" && chmod +x "$HOME/.bin/argo"; then
     print_in_green "${bold}✓ installed!${normal}\n"
   else
     print_in_red "${bold}✗ error!!!${normal}\n"
   fi
 else
   print_success_muted "argo"
+fi
+
+### argocd
+if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/argocd" ] || ! argocd version --client | grep -q "$argocd_version"; then
+  echo_install "Installing argocd $argocd_version"
+  if curl --fail --retry 3 --retry-delay 1 -L -s https://github.com/argoproj/argo-cd/releases/download/${argocd_version}/argocd-darwin-amd64 -o "$HOME/.bin/argocd" && chmod +x "$HOME/.bin/argocd"; then
+    print_in_green "${bold}✓ installed!${normal}\n"
+  else
+    print_in_red "${bold}✗ error!!!${normal}\n"
+  fi
+else
+  print_success_muted "argocd"
 fi
 
 ### tilt
