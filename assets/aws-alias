@@ -23,6 +23,32 @@ image-repo = ecr-repo
 default-vpc = ec2 describe-vpcs --filters "Name=isDefault,Values=true"
 
 admins =
-  !f() {
-    aws iam get-group --group-name administrators | jq -r '.Users[].UserName'
-  }; f
+    !f() {
+        aws iam get-group --group-name administrators | jq -r '.Users[].UserName'
+    }; f
+
+put-secret =
+    !f() {
+        if [ $# -lt 2 ]; then
+            echo "Must supply secret name and secret value"
+            exit 1
+        fi
+
+        secret_name="$1"
+        secret_value="$2"
+
+        aws secretsmanager put-secret-value --secret-id "$secret_name" --secret-string "$secret_value" \
+            || aws secretsmanager create-secret --name "$secret_name" --secret-string "$secret_value"
+    }; f
+
+get-secret =
+    !f() {
+        if [ $# -lt 1 ]; then
+            echo "Must supply secret name"
+            exit 1
+        fi
+
+        secret_name="$1"
+        
+        aws secretsmanager get-secret-value --secret-id "$secret_name" | jq -r .SecretString
+    }; f
