@@ -18,16 +18,16 @@ outdated=$(brew outdated --cask)
 for cask in "${casks[@]}"; do
     if ! echo "$installed" | grep -q "$cask"; then
         echo_install "Installing $cask"
-        brew cask install "$cask" --appdir=/Applications >/dev/null
+        brew install --cask "$cask" --appdir=/Applications >/dev/null
         print_in_green "${bold}✓ installed!${normal}\n"
     else
         if [ "$FORCE" = true ]; then
             echo_install "Reinstalling $cask"
-            brew cask reinstall "$cask" >/dev/null
+            brew cask --cask reinstall "$cask" >/dev/null
             print_in_green "${bold}✓ installed!${normal}\n"
         elif echo "$outdated" | grep -q "$cask"; then
             echo_install "Upgrading $cask"
-            brew cask upgrade "$cask" >/dev/null
+            brew cask --cask upgrade "$cask" >/dev/null
             print_in_green "${bold}✓ upgraded!${normal}\n"
         else
             print_success_muted "$cask"
