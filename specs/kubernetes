@@ -9,7 +9,7 @@ helm_version=$(jq -r .helm <<<"$versions")
 kops_version=$(jq -r .kops <<<"$versions")
 argo_version=$(jq -r .argo <<<"$versions")
 argocd_version=$(jq -r .argocd <<<"$versions")
-tilt_version=$(jq -r .tilt <<<"$versions")
+terraform_version=$(jq -r .terraform <<<"$versions")
 
 if ! [ -x "$(command -v docker)" ]; then
   print_error "Docker is required, it should be included in the 'specs'"
@@ -81,17 +81,24 @@ else
   print_success_muted "argocd"
 fi
 
-### tilt
-if [ "$FORCE" = true ] || [ ! command -v tilt ] >/dev/null 2>&1 || ! tilt version | grep -q "$tilt_version"; then
-  echo_install "Installing tilt $tilt_version"
-  if curl --fail --retry 3 --retry-delay 1 -L -s https://raw.githubusercontent.com/tilt-dev/tilt/${tilt_version}/scripts/install.sh | bash >/dev/null 2>&1; then
-    print_in_green "${bold}✓ installed!${normal}\n"
+### terraform
+if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/terraform" ] || ! terraform version | grep -q "$terraform_version"; then
+  echo_install "Installing terraform $terraform_version"
+  tmp_file="$(mktemp)"
+  if curl --fail --retry 3 --retry-delay 1 -L -s "https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_darwin_amd64.zip" > "$tmp_file"; then
+    if unzip -p "$tmp_file" > "$HOME/.bin/terraform" && chmod +x "$HOME/.bin/terraform"; then
+      print_in_green "${bold}✓ installed!${normal}\n"
+    else
+      print_in_red "${bold}✗ error!!!${normal}\n"
+    fi
+    rm "$tmp_file"
   else
     print_in_red "${bold}✗ error!!!${normal}\n"
   fi
 else
-  print_success_muted "tilt"
+  print_success_muted "terraform"
 fi
+
 
 ### promtool
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/promtool" ]; then
