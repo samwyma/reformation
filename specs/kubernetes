@@ -10,6 +10,7 @@ kops_version=$(jq -r .kops <<<"$versions")
 argo_version=$(jq -r .argo <<<"$versions")
 argocd_version=$(jq -r .argocd <<<"$versions")
 terraform_version=$(jq -r .terraform <<<"$versions")
+gcloud_version="406.0.0"
 
 if ! [ -x "$(command -v docker)" ]; then
   print_error "Docker is required, it should be included in the 'specs'"
@@ -97,6 +98,22 @@ if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/terraform" ] || ! terraform version
   fi
 else
   print_success_muted "terraform"
+fi
+
+### gcloud
+if [ "$FORCE" = true ] || [ ! command -v gcloud ] || ! gcloud --version | grep -q "$gcloud_version"; then
+  echo_install "Installing gcloud $gcloud_version"
+  rm -rf "$HOME/.bin/google-cloud-sdk"
+  if curl --fail --retry 3 --retry-delay 1 -L -s "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-${gcloud_version}-darwin-x86_64.tar.gz" | tar xf - -C "$HOME/.bin"; then
+    if (cd "$HOME/.bin" && ./google-cloud-sdk/install.sh -q --install-python false); then
+      print_in_green "${bold}✓ installed!${normal}\n"
+    fi
+    print_in_red "${bold}✗ error!!!${normal}\n"
+  else
+    print_in_red "${bold}✗ error!!!${normal}\n"
+  fi
+else
+  print_success_muted "gcloud"
 fi
 
 
