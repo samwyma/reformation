@@ -6,6 +6,9 @@ packages=(
 	credstash
 	pylint
 	pywatchman
+	tensorflow
+	tensorflow-probability
+	d2l
 )
 
 title "Python"

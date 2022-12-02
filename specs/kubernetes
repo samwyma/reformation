@@ -10,6 +10,7 @@ kops_version=$(jq -r .kops <<<"$versions")
 argo_version=$(jq -r .argo <<<"$versions")
 argocd_version=$(jq -r .argocd <<<"$versions")
 terraform_version=$(jq -r .terraform <<<"$versions")
+packer_version=$(jq -r .packer <<<"$versions")
 gcloud_version="406.0.0"
 
 if ! [ -x "$(command -v docker)" ]; then
@@ -98,6 +99,24 @@ if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/terraform" ] || ! terraform version
   fi
 else
   print_success_muted "terraform"
+fi
+
+### packer
+if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/packer" ] || ! packer version | grep -q "$packer_version"; then
+  echo_install "Installing packer $packer_version"
+  tmp_file="$(mktemp)"
+  if curl --fail --retry 3 --retry-delay 1 -L -s "https://releases.hashicorp.com/packer/${packer_version}/packer_${packer_version}_darwin_amd64.zip" > "$tmp_file"; then
+    if unzip -p "$tmp_file" > "$HOME/.bin/packer" && chmod +x "$HOME/.bin/packer"; then
+      print_in_green "${bold}✓ installed!${normal}\n"
+    else
+      print_in_red "${bold}✗ error!!!${normal}\n"
+    fi
+    rm "$tmp_file"
+  else
+    print_in_red "${bold}✗ error!!!${normal}\n"
+  fi
+else
+  print_success_muted "packer"
 fi
 
 ### gcloud
