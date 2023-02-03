@@ -4,34 +4,30 @@ set -euo pipefail
 
 ### VARIABLES
 
-config_file="$HOME/.landtech/accounts.json"
+echo_help() {
+  echo "Usage:
+    --profile <string>     : Your AWS CLI profile, ie 'default'
+    --account-id <string>  : The AWS Account Id where the role resides
+    --role <string>        : The role to assume
+    --duration <int>       : The life of the session (in seconds) when assuming a role
 
-# load from stdin first, and if empty load from config file
-if [ ! -t 0 ]; then
-  config="$(cat)"
-else
-  config="$(cat "$config_file")"
-fi
-
-if [ -z "$config" ]; then
-  echo "Error - the config $config_file is empty"
-  exit 2
-fi
-
-if [ ! "$(jq -e . <<<"$config")" ]; then
-  echo "Error - the config $config_file is not valid json"
-  exit 3
-fi
+Examples:
+aws-assume-role --account-id 12345678 --role administrator --profile default --duration 600
+      "
+}
 
 profile="${AWS_PROFILE:=default}"
+
+account_id=""
+role=""
 
 for var in "$@"; do
   case "$var" in
   --profile)
     profile="$2"
     ;;
-  --account)
-    account="$2"
+  --account-id)
+    account_id="$2"
     ;;
   --role)
     role="$2"
@@ -40,71 +36,30 @@ for var in "$@"; do
     duration="$2"
     ;;
   --help)
-    echo "Usage:
-    --profile <string>   : Your AWS CLI profile, ie 'default'
-    --account <string>   : The AWS Account where the role resides
-    --role <string>      : The role to assume
-    --duration <int>     : The life of the session (in seconds) when assuming a role
-
-Examples:
-aws-assume-role --account sandbox --role administrator --profile default --duration 600
-aws-assume-role < ~/account.json
-      "
+    echo_help
     exit 0
     ;;
   esac
   shift
 done
 
+if [ "$role" == "" ]; then
+  echo_help
+  exit 1
+fi
+
+if [ "$account_id" == "" ]; then
+  echo_help
+  exit 1
+fi
+
 ### FUNCTIONS
-
-set_account() {
-  # read accounts from json into a bash array
-  mapfile -t accounts < <(jq -r 'keys[]' <<<"$config")
-
-  if [[ ! -v account ]]; then
-    echo 'Which account are you accessing?'
-    select account in "${accounts[@]}"; do
-      break
-    done </dev/tty # read from terminal (not /dev/stdin)
-    echo
-  fi
-
-  if ! jq ."$account".id >/dev/null 2>&1 <<<"$config"; then
-    echo "Error - unknown account"
-    exit 1
-  fi
-
-  account_id=$(jq -r ."$account".id <<<"$config")
-}
-
-set_role() {
-  if [[ ! -v role ]]; then
-    # read accounts from json into a bash array
-    mapfile -t roles < <(jq -r ."$account".roles[] <<<"$config")
-
-    if [[ ${#roles[@]} == 1 ]]; then
-      echo "Only one role available...using role: ${roles[0]}"
-      role=${roles[0]}
-    else
-      echo "Which role do you want to assume?"
-      select role in "${roles[@]}"; do
-        break
-      done </dev/tty # read from terminal (not /dev/stdin)
-    fi
-    echo
-  fi
-}
 
 set_duration() {
   if [[ ! -v duration ]]; then
-    minutes=$(jq -r ."$account".session_duration.minutes <<<"$config")
+    minutes="60"
     duration=$((minutes * 60))
   fi
-}
-
-requires_mfa() {
-  jq ."$account".mfa <<<"$config"
 }
 
 get_session_token() {
@@ -114,24 +69,20 @@ get_session_token() {
 
 ### ASSUME-ROLE
 
-set_account
-set_role
 set_duration
-
-if [[ "$(requires_mfa)" == "true" ]]; then
-  get_session_token
-fi
 
 echo "Assuming role..."
 response=$(aws sts assume-role \
   --role-arn arn:aws:iam::"$account_id":role/"$role" \
-  --role-session-name "$account-session" \
+  --role-session-name "$account_id-session" \
   --duration-seconds "$duration" \
   --profile $profile)
 
-aws configure set profile."${account}".aws_access_key_id "$(jq -r .Credentials.AccessKeyId <<<"$response")"
-aws configure set profile."${account}".aws_secret_access_key "$(jq -r .Credentials.SecretAccessKey <<<"$response")"
-aws configure set profile."${account}".aws_session_token "$(jq -r .Credentials.SessionToken <<<"$response")"
+new_profile_name="${account_id}_${role}"
 
-echo "Profile: ${account}"
-jq --arg profile "$account" '. += {"Profile": $profile}' <<<"$response"
+aws configure set profile."${new_profile_name}".aws_access_key_id "$(jq -r .Credentials.AccessKeyId <<<"$response")"
+aws configure set profile."${new_profile_name}".aws_secret_access_key "$(jq -r .Credentials.SecretAccessKey <<<"$response")"
+aws configure set profile."${new_profile_name}".aws_session_token "$(jq -r .Credentials.SessionToken <<<"$response")"
+
+echo "Profile: ${new_profile_name}"
+jq --arg profile "$new_profile_name" '. += {"Profile": $profile}' <<<"$response"
