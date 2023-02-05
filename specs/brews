@@ -42,6 +42,7 @@ brews=(
     tilt-dev/tap/ctlptl
     tilt-dev/tap/tilt
     antibody
+    libpq
 )
 
 title "Homebrew"
