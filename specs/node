@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source "$(cd "$(dirname "$0")" && pwd)/../pretty-print"
 
-node_major="16"
+node_major="18"
 node_ver="latest-v$node_major.x"
 
 modules=(
@@ -29,7 +29,7 @@ eval "$(fnm env)"
 
 if [ "$FORCE" = true ] || ! fnm ls | grep -q "v$node_major."; then
 	echo_install "Installing node v$node_major"
-	fnm install $node_ver &>/dev/null
+	fnm install $node_major
 	print_in_green "${bold}✓ installed!${normal}\n"
 else
 	print_success_muted "node v$node_major"
