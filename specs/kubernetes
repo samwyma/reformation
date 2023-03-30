@@ -140,7 +140,7 @@ fi
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/promtool" ]; then
   echo_install "Installing promtool"
   docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
-    "go get github.com/prometheus/prometheus/cmd/promtool && cp /go/bin/darwin_amd64/promtool /data"
+    "go install github.com/prometheus/prometheus/cmd/promtool@latest && cp /go/bin/darwin_amd64/promtool /data"
   print_in_green "${bold}✓ installed!${normal}\n"
 else
   print_success_muted "promtool"
@@ -149,7 +149,7 @@ fi
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/jb" ]; then
   echo_install "Installing jsonnet-bundler"
   docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
-    "go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb && cp /go/bin/darwin_amd64/jb /data"
+    "go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest && cp /go/bin/darwin_amd64/jb /data"
   print_in_green "${bold}✓ installed!${normal}\n"
 else
   print_success_muted "jsonnet-bundler"
@@ -158,7 +158,7 @@ fi
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/gojsontoyaml" ]; then
   echo_install "Installing gojsontoyaml"
   docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
-    "go get github.com/brancz/gojsontoyaml && cp /go/bin/darwin_amd64/gojsontoyaml /data"
+    "go install github.com/brancz/gojsontoyaml@latest && cp /go/bin/darwin_amd64/gojsontoyaml /data"
   print_in_green "${bold}✓ installed!${normal}\n"
 else
   print_success_muted "gojsontoyaml"
@@ -167,7 +167,7 @@ fi
 if [ "$FORCE" = true ] || [ ! -f "$HOME/.bin/render" ]; then
   echo_install "Installing render"
   docker run --rm -e GOOS=darwin -e GOARCH=amd64 -v "$HOME/.bin":/data golang /bin/bash -c \
-    "go get github.com/VirtusLab/render && cp /go/bin/darwin_amd64/render /data"
+    "go install github.com/VirtusLab/render@latest && cp /go/bin/darwin_amd64/render /data"
   print_in_green "${bold}✓ installed!${normal}\n"
 else
   print_success_muted "render"
