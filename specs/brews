@@ -39,10 +39,12 @@ brews=(
     watchman
     python-yq
     kind
-    tilt-dev/tap/ctlptl
-    tilt-dev/tap/tilt
     antibody
     libpq
+    geos
+    hdf5
+    gdal
+    proj
 )
 
 title "Homebrew"
