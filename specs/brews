@@ -18,6 +18,7 @@ brews=(
     docker-compose
     # python
     pyenv
+    pyenv-virtualenv
     # node
     yarn
     # password store
@@ -45,6 +46,8 @@ brews=(
     hdf5
     gdal
     proj
+    osm2pgsql
+    openjdk
 )
 
 title "Homebrew"
@@ -96,4 +99,10 @@ fi
 if [[ ! ":$PATH:" == *":/usr/local/opt/gnu-sed/libexec/gnubin:"* ]]; then
     print_error "\$PATH entry missing for 'sed'"
     print_error "Add to your shell's rc file: PATH=\"/usr/local/opt/gnu-sed/libexec/gnubin:\$PATH\""
+fi
+
+if ! java --version &> /dev/null; then
+    print_error "java --version command does not work"
+    print_error "Run the following command: sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk"
+    print_error "If that doesn't work, run 'brew uninstall openjdk && brew install openjdk' and check the output"
 fi
