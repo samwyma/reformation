@@ -48,6 +48,7 @@ brews=(
     proj
     osm2pgsql
     openjdk
+    xmlstarlet
 )
 
 title "Homebrew"
