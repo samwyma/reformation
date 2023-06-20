@@ -107,3 +107,8 @@ if ! java --version &> /dev/null; then
     print_error "Run the following command: sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk"
     print_error "If that doesn't work, run 'brew uninstall openjdk && brew install openjdk' and check the output"
 fi
+
+if [[ "$JAVA_HOME" == "" ]]; then
+    print_error "\$JAVA_HOME not set"
+    print_error "Add to your shell's rc file: export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+fi
