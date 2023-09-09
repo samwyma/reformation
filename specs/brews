@@ -49,6 +49,7 @@ brews=(
     osm2pgsql
     openjdk
     xmlstarlet
+    librsvg
 )
 
 title "Homebrew"
