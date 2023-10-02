@@ -50,6 +50,7 @@ brews=(
     openjdk
     xmlstarlet
     librsvg
+    ariga/tap/atlas
 )
 
 title "Homebrew"
