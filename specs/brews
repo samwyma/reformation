@@ -51,6 +51,7 @@ brews=(
     xmlstarlet
     librsvg
     ariga/tap/atlas
+    railway
 )
 
 title "Homebrew"
